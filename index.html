@@ -1,0 +1,211 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home - LEAD Matrix 4.0</title>
+    <link rel = "stylesheet" href = "style.css">
+</head>
+<body>
+
+    <div id="bg-container">
+        <div id="art-collage">
+            <div class="collage-item item-1"></div>
+            <div class="collage-item item-2"></div>
+            <div class="collage-item item-3"></div>
+            <div class="collage-item item-4"></div>
+            <div class="collage-item item-5"></div>
+            <div class="collage-item item-6"></div>
+        </div>
+        <div class="bg-tint"></div>
+        <canvas id="matrixCanvas"></canvas>
+    </div>
+
+    <nav>
+<div class="logo">
+    <img src="LEAD_white.png" alt="LEAD Society Logo">
+</div>
+
+        
+        <div class="hamburger" id="hamburger-menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+        <div class="nav-links" id="nav-menu">
+            <a href="index.html" class="active">Home</a>
+            <a href="events.html">Events</a>
+            <a href="sponsors.html">Sponsors</a>
+            <a href="contact.html">Contact Us</a>
+        </div>
+    </nav>
+
+    <div class="hero-section">
+<div class="lead-fullform">
+    <span>LEARN</span>
+    <span>EMERGE</span>
+    <span>ASPIRE</span>
+    <span>DISCOVER</span>
+</div>
+        <h1 class="hero-title">MATRIX 4.0</h1>
+        
+        <div class="typewriter-container">
+            <h2 class="hero-subtitle">The Red Notice Protocol</h2>
+        </div>
+
+        <div class="timer-container">
+            <div class="time-box">
+                <div class="corner-bracket tl"></div><div class="corner-bracket tr"></div>
+                <div class="corner-bracket bl"></div><div class="corner-bracket br"></div>
+                <span class="time-value" id="days">00</span>
+                <span class="time-label">Days</span>
+            </div>
+            <div class="time-box">
+                <div class="corner-bracket tl"></div><div class="corner-bracket tr"></div>
+                <div class="corner-bracket bl"></div><div class="corner-bracket br"></div>
+                <span class="time-value" id="hours">00</span>
+                <span class="time-label">Hours</span>
+            </div>
+            <div class="time-box">
+                <div class="corner-bracket tl"></div><div class="corner-bracket tr"></div>
+                <div class="corner-bracket bl"></div><div class="corner-bracket br"></div>
+                <span class="time-value" id="minutes">00</span>
+                <span class="time-label">Minutes</span>
+            </div>
+            <div class="time-box">
+                <div class="corner-bracket tl"></div><div class="corner-bracket tr"></div>
+                <div class="corner-bracket bl"></div><div class="corner-bracket br"></div>
+                <span class="time-value" id="seconds">00</span>
+                <span class="time-label">Seconds</span>
+            </div>
+        </div>
+
+        <button class="cta-btn">Initiate Sequence</button>
+    </div>
+
+    <script>
+        /* --- 1. RESPONSIVE HAMBURGER & INTERACTION --- */
+        const hamburger = document.getElementById('hamburger-menu');
+        const navMenu = document.getElementById('nav-menu');
+
+        hamburger.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            hamburger.classList.toggle('toggle');
+        });
+
+        // Intercept clicks on links for animation
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                // Only prevent default on mobile view where menu is active
+                if (window.innerWidth <= 768) {
+                    e.preventDefault(); // Stop immediate navigation
+                    const href = this.getAttribute('href');
+
+                    // 1. Add class to trigger full underline CSS transition
+                    this.classList.add('nav-clicked');
+
+                    // 2. Wait 800ms (0.8s) for animation to play, then navigate
+                    setTimeout(() => {
+                        window.location.href = href;
+                        // Optional: close menu after navigating (visual cleanup if SPA)
+                        navMenu.classList.remove('active');
+                        hamburger.classList.remove('toggle');
+                        this.classList.remove('nav-clicked');
+                    }, 800);
+                }
+            });
+        });
+
+        /* --- 2. MATRIX RAIN ANIMATION --- */
+        const canvas = document.getElementById('matrixCanvas');
+        const ctx = canvas.getContext('2d');
+        let width, height;
+        
+        function resizeCanvas() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
+            initDrops();
+        }
+        window.addEventListener('resize', resizeCanvas);
+
+        const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ$#@&%';
+        const fontSize = 14;
+        let columns;
+        let drops = [];
+
+        function initDrops() {
+            columns = Math.ceil(width / fontSize);
+            drops = [];
+            for (let i = 0; i < columns; i++) {
+                drops.push({
+                    y: Math.random() * height,
+                    direction: Math.random() > 0.4 ? 1 : -1, 
+                    speed: Math.random() * 0.15 + 0.05, 
+                    drift: (Math.random() - 0.5) * 0.2 
+                });
+            }
+        }
+        resizeCanvas();
+
+        let lastTime = 0;
+        const targetFPS = 24; 
+        const frameInterval = 1000 / targetFPS;
+
+        function draw(currentTime) {
+            requestAnimationFrame(draw);
+            const deltaTime = currentTime - lastTime;
+            if (deltaTime < frameInterval) return;
+            lastTime = currentTime - (deltaTime % frameInterval);
+
+            ctx.clearRect(0, 0, width, height);
+            ctx.font = fontSize + 'px monospace';
+            ctx.textAlign = 'center';
+            
+            for (let i = 0; i < drops.length; i++) {
+                const drop = drops[i];
+                const hue = Math.random() > 0.8 ? 0 : (Math.random() > 0.5 ? 180 : 0);
+                const saturation = 100;
+                const lightness = Math.random() * 40 + 60;
+                const alpha = Math.random() * 0.4 + 0.2;
+
+                ctx.fillStyle = `hsla(${hue}, ${saturation}%, ${lightness}%, ${alpha})`;
+                const text = chars[Math.floor(Math.random() * chars.length)];
+                const x = i * fontSize + (drop.y * drop.drift); 
+                ctx.fillText(text, x, drop.y);
+
+                if (drop.direction === 1) {
+                    drop.y += fontSize * drop.speed;
+                    if (drop.y > height + fontSize && Math.random() > 0.98) { drop.y = -fontSize; drop.drift = (Math.random() - 0.5) * 0.2; }
+                } else {
+                    drop.y -= fontSize * drop.speed;
+                    if (drop.y < -fontSize && Math.random() > 0.98) { drop.y = height + fontSize; drop.drift = (Math.random() - 0.5) * 0.2; }
+                }
+            }
+        }
+        requestAnimationFrame(draw);
+
+        /* --- 3. COUNTDOWN TIMER --- */
+        const countDownDate = new Date().getTime() + (14 * 24 * 60 * 60 * 1000); 
+        const x = setInterval(function() {
+            const now = new Date().getTime();
+            const distance = countDownDate - now;
+
+            const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+            document.getElementById("days").innerText = days < 10 ? "0" + days : days;
+            document.getElementById("hours").innerText = hours < 10 ? "0" + hours : hours;
+            document.getElementById("minutes").innerText = minutes < 10 ? "0" + minutes : minutes;
+            document.getElementById("seconds").innerText = seconds < 10 ? "0" + seconds : seconds;
+
+            if (distance < 0) {
+                clearInterval(x);
+                document.querySelector(".timer-container").innerHTML = "<h2 style='color:red; font-family:Orbitron'>PROTOCOL ENGAGED</h2>";
+            }
+        }, 1000);
+    </script>
+</body>
+</html>
