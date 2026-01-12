@@ -1,0 +1,451 @@
+                /* Import fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Orbitron:wght@500;700;900&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            background-color: #050000;
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- Background Styling --- */
+        #bg-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bg-tint {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(40, 0, 0, 0.85), rgba(10, 0, 0, 0.95));
+            z-index: 1;
+            mix-blend-mode: multiply;
+        }
+
+        #art-collage {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            opacity: 1.;
+            filter: contrast(1.2) grayscale(30%);
+        }
+
+        .collage-item {
+            background-size: cover;
+            background-position: center;
+            box-shadow: inset 0 0 50px #000;
+        }
+
+        .item-1 { background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg/800px-Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg'); }
+.item-1 {
+    background-position: 35% 20%;
+    background-size: cover;
+}
+
+        .item-2 { background-image: url('https://images.unsplash.com/photo-1578321272176-b7bbc0679853?q=80&w=1000&auto=format&fit=crop'); }
+        .item-3 { background-image: url('https://media-cldnry.s-nbcnews.com/image/upload/t_fit-560w,f_avif,q_auto:eco,dpr_2/MSNBC/Components/Photo/_new/100520-matisse-theft-8a.jpg');}
+        .item-4 { background-image: url('https://images.unsplash.com/photo-1580136608260-4eb11f4b24fe?q=80&w=1000&auto=format&fit=crop'); }
+        .item-5 { background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Sandro_Botticelli_-_La_nascita_di_Venere_-_Google_Art_Project_-_edited.jpg/1200px-Sandro_Botticelli_-_La_nascita_di_Venere_-_Google_Art_Project_-_edited.jpg'); }
+        .item-6 { background-image: url('https://miro.medium.com/v2/resize:fit:1100/format:webp/0*o0UA3d0rKtQXGpEc.jpg');}
+
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            opacity: 0.7;
+        }
+
+        /* --- Navigation Bar --- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 50px;
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 50, 50, 0.3);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 80px;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+.logo {
+    display: flex;
+    align-items: center;
+    z-index: 1002;
+}
+
+.logo img {
+    height: 64px;                 /* big, brand-level size */
+    width: auto;
+    filter: drop-shadow(0 0 14px rgba(255, 0, 0, 0.6));
+    transition: transform 0.3s ease;
+}
+
+
+
+.logo img:hover {
+    transform: scale(1.05);
+}
+
+
+        /* Navigation Links Container */
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #ccc;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 5px 0;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: #ff3333;
+            text-shadow: 0 0 8px rgba(255, 0, 0, 0.6);
+        }
+
+        .nav-links a::after {
+            content: ''; position: absolute; width: 0; height: 2px; bottom: 0; left: 0;
+            background-color: #ff3333; transition: width 0.3s ease;
+        }
+        .nav-links a:hover::after, .nav-links a.active::after { width: 100%; }
+
+        /* Class to force underline on click */
+        .nav-links a.nav-clicked::after {
+            width: 100%;
+            transition: width 0.5s ease-out; /* Slower underline expansion */
+        }
+
+        /* --- Hamburger Menu Icon --- */
+        .hamburger {
+            display: none;
+            cursor: pointer;
+            flex-direction: column;
+            gap: 5px;
+            z-index: 1002;
+        }
+
+        .hamburger span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background-color: #fff;
+            transition: all 0.3s ease;
+        }
+
+        /* --- HERO SECTION --- */
+        .hero-section {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 120px 20px 60px 20px;
+            text-align: center;
+            z-index: 10;
+        }
+
+        .hero-pretitle {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.3rem;
+            color: #ff3333;
+            font-weight: 700;
+            letter-spacing: 4px;
+            text-transform: uppercase;
+            margin-bottom: 15px;
+            text-shadow: 0 0 10px rgba(255, 0, 0, 0.5);
+        }
+
+        .hero-title {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 6rem;
+            font-weight: 900;
+            letter-spacing: 5px;
+            position: relative;
+            color: #fff;
+            text-transform: uppercase;
+            margin-bottom: 10px;
+            max-width: 100%;
+        }
+
+        .hero-title::before, .hero-title::after {
+            content: 'MATRIX 4.0';
+            position: absolute;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: #050000;
+        }
+
+        .hero-title::before {
+            left: 2px; text-shadow: -1px 0 #ff0000;
+            clip: rect(24px, 550px, 90px, 0);
+            animation: glitch-anim 3s infinite linear alternate-reverse;
+            background: transparent;
+        }
+
+        .hero-title::after {
+            left: -2px; text-shadow: -1px 0 #00ffff;
+            clip: rect(85px, 550px, 140px, 0);
+            animation: glitch-anim 2s infinite linear alternate-reverse;
+            background: transparent;
+        }
+
+.lead-fullform {
+    display: flex;
+    gap: 35px;
+    margin-bottom: 20px;
+    font-family: 'Orbitron', sans-serif;
+    font-size: 1.1rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    justify-content: center;
+}
+
+.lead-fullform span {
+    position: relative;
+    color: #ffffff;
+    padding-bottom: 6px;
+    text-shadow: 0 0 10px rgba(255,255,255,0.2);
+}
+
+/* Red underline for each word */
+.lead-fullform span::after {
+    content: "";
+    position: absolute;
+    left: 10%;
+    bottom: 0;
+    width: 80%;
+    height: 2px;
+    background: linear-gradient(to right, transparent, #ff3333, transparent);
+    box-shadow: 0 0 10px rgba(255,0,0,0.6);
+}
+
+
+        @keyframes glitch-anim {
+            0% { clip: rect(10px, 9999px, 30px, 0); }
+            20% { clip: rect(80px, 9999px, 100px, 0); }
+            40% { clip: rect(40px, 9999px, 60px, 0); }
+            60% { clip: rect(20px, 9999px, 80px, 0); }
+            80% { clip: rect(90px, 9999px, 120px, 0); }
+            100% { clip: rect(60px, 9999px, 70px, 0); }
+        }
+
+        .hero-subtitle {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 1.8rem;
+            color: #ff3333;
+            text-transform: uppercase;
+            letter-spacing: 8px;
+            margin-bottom: 50px;
+            font-weight: 600;
+            border-right: 2px solid #ff3333;
+            white-space: nowrap;
+            overflow: hidden;
+            width: 0;
+            animation: typing 3s steps(30, end) forwards, blink 0.75s step-end infinite;
+        }
+        
+        .typewriter-container { display: inline-block; max-width: 100%; }
+        @keyframes typing { from { width: 0; } to { width: 100%; } }
+        @keyframes blink { from, to { border-color: transparent; } 50% { border-color: #ff3333; } }
+
+        /* Timer Styling */
+        .timer-container {
+            display: flex;
+            gap: 30px;
+            margin-top: 20px;
+            perspective: 500px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .time-box {
+            background: rgba(20, 0, 0, 0.7);
+            border: 1px solid rgba(255, 0, 0, 0.4);
+            backdrop-filter: blur(10px);
+            padding: 20px;
+            border-radius: 8px;
+            min-width: 120px;
+            text-align: center;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.2);
+            transition: transform 0.3s, box-shadow 0.3s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .time-box:hover {
+            transform: scale(1.1) translateZ(20px);
+            box-shadow: 0 0 30px rgba(255, 0, 0, 0.6);
+            border-color: #ff3333;
+        }
+
+        .time-value {
+            font-family: 'Orbitron', sans-serif;
+            font-size: 3rem;
+            font-weight: 700;
+            color: #fff;
+            display: block;
+        }
+
+        .time-label {
+            font-family: 'Montserrat', sans-serif;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            color: #aaa;
+            letter-spacing: 2px;
+            margin-top: 5px;
+        }
+
+        .corner-bracket { position: absolute; width: 10px; height: 10px; border: 2px solid #ff3333; transition: all 0.3s; }
+        .tl { top: 0; left: 0; border-right: none; border-bottom: none; }
+        .tr { top: 0; right: 0; border-left: none; border-bottom: none; }
+        .bl { bottom: 0; left: 0; border-right: none; border-top: none; }
+        .br { bottom: 0; right: 0; border-left: none; border-top: none; }
+        .time-box:hover .corner-bracket { width: 100%; height: 100%; opacity: 0.2; }
+
+        .cta-btn {
+            margin-top: 60px;
+            padding: 15px 40px;
+            background: transparent;
+            border: 2px solid #ff3333;
+            color: #ff3333;
+            font-family: 'Orbitron', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+            transition: all 0.4s;
+        }
+        .cta-btn::before {
+            content: ''; position: absolute; top: 0; left: -100%; width: 100%; height: 100%;
+            background: #ff3333; transition: all 0.4s; z-index: -1;
+        }
+        .cta-btn:hover { color: #fff; box-shadow: 0 0 20px #ff3333; }
+        .cta-btn:hover::before { left: 0; }
+
+        /* --- MEDIA QUERIES FOR RESPONSIVENESS --- */
+        @media (max-width: 900px) {
+            .hero-title { font-size: 4.5rem; }
+            .hero-pretitle { font-size: 1.1rem; }
+        }
+
+        @media (max-width: 768px) {
+            nav { padding: 0 20px; }
+            
+            .hamburger { display: flex; }
+
+            /* Mobile Menu Styling - FROM RIGHT */
+            .nav-links {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw; 
+                height: 100vh;
+                
+                /* Gradient: Transparent on Left, Black on Right */
+                background: linear-gradient(to left, #000000 0%, #000000 55%, rgba(0,0,0,0.1) 100%);
+                
+                /* Full Blur */
+                backdrop-filter: blur(15px);
+                -webkit-backdrop-filter: blur(15px);
+
+                flex-direction: column;
+                align-items: flex-end; /* Align Text to Right */
+                justify-content: center;
+                padding-right: 50px; /* Indent from right edge */
+                
+                /* Animate from RIGHT (100%) */
+                transform: translateX(100%);
+                opacity: 0;
+                transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
+                z-index: 1000;
+            }
+
+            .nav-links.active {
+                transform: translateX(0);
+                opacity: 1;
+            }
+
+            .nav-links a {
+                font-size: 1.8rem;
+                margin: 20px 0;
+                width: auto;
+                text-align: right;
+                display: block;
+            }
+            
+            /* Underline animation direction for right aligned text */
+            .nav-links a::after {
+                left: auto; 
+                right: 0; /* Grow from right */
+            }
+
+            .hamburger.toggle span:nth-child(1) { transform: rotate(45deg) translate(5px, 6px); }
+            .hamburger.toggle span:nth-child(2) { opacity: 0; }
+            .hamburger.toggle span:nth-child(3) { transform: rotate(-45deg) translate(5px, -6px); }
+
+            .hero-section { padding-top: 100px; }
+            .hero-pretitle { font-size: 0.9rem; letter-spacing: 2px; }
+            .hero-title { font-size: 2.5rem; letter-spacing: 2px; }
+            
+            .hero-subtitle { 
+                font-size: 1rem; 
+                letter-spacing: 3px; 
+                white-space: normal;
+                border-right: none;
+                animation: none;
+                width: auto;
+            }
+
+            .timer-container { gap: 15px; }
+            .time-box { min-width: 70px; padding: 10px; }
+            .time-value { font-size: 1.5rem; }
+            .time-label { font-size: 0.6rem; letter-spacing: 1px; }
+            .cta-btn { font-size: 1rem; padding: 12px 30px; }
+        }
+
+        @media (max-width: 400px) {
+            .hero-title { font-size: 2rem; }
+            .time-box { min-width: 60px; padding: 8px; }
+            .time-value { font-size: 1.2rem; }
+        }
