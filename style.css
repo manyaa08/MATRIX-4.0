@@ -1,4 +1,4 @@
-                /* Import fonts */
+                        /* Import fonts */
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Orbitron:wght@500;700;900&display=swap');
 
         * {
@@ -106,7 +106,7 @@
 }
 
 .logo img {
-    height: 64px;                 /* big, brand-level size */
+    height: 45px;                 /* big, brand-level size */
     width: auto;
     filter: drop-shadow(0 0 14px rgba(255, 0, 0, 0.6));
     transition: transform 0.3s ease;
@@ -229,14 +229,18 @@
 
 .lead-fullform {
     display: flex;
+    justify-content: center;
     gap: 35px;
     margin-bottom: 20px;
     font-family: 'Orbitron', sans-serif;
-    font-size: 1.1rem;
-    letter-spacing: 3px;
+    font-size: clamp(0.65rem, 2.5vw, 1.1rem); /* auto scales */
+    letter-spacing: clamp(1px, 0.4vw, 3px);
     text-transform: uppercase;
-    justify-content: center;
+    white-space: nowrap;   /* NEVER go to new line */
+    overflow: hidden;
+    max-width: 100%;
 }
+
 
 .lead-fullform span {
     position: relative;
@@ -245,7 +249,6 @@
     text-shadow: 0 0 10px rgba(255,255,255,0.2);
 }
 
-/* Red underline for each word */
 .lead-fullform span::after {
     content: "";
     position: absolute;
@@ -256,6 +259,7 @@
     background: linear-gradient(to right, transparent, #ff3333, transparent);
     box-shadow: 0 0 10px rgba(255,0,0,0.6);
 }
+
 
 
         @keyframes glitch-anim {
@@ -384,6 +388,19 @@
                 
                 /* Gradient: Transparent on Left, Black on Right */
                 background: linear-gradient(to left, #000000 0%, #000000 55%, rgba(0,0,0,0.1) 100%);
+
+
+
+.lead-fullform {
+    gap: 15px;         /* Reduce gap from 35px to 15px */
+    font-size: 0.8rem; /* Reduce font size */
+    margin-bottom: 30px;
+    padding: 0 10px;   /* Prevent edge touching */
+}
+
+.lead-fullform span {
+    text-shadow: 0 0 5px rgba(255,255,255,0.2); /* Slight glow reduction for cleaner mobile look */
+}
                 
                 /* Full Blur */
                 backdrop-filter: blur(15px);
