@@ -4,7 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home - LEAD Matrix 4.0</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
     <link rel = "stylesheet" href = "style.css">
+
 </head>
 <body>
 
@@ -22,17 +26,12 @@
     </div>
 
     <nav>
-<div class="logo">
-    <img src="LEAD_white.png" alt="LEAD Society Logo">
-</div>
-
-        
-        <div class="hamburger" id="hamburger-menu">
-            <span></span>
-            <span></span>
-            <span></span>
+        <div class="logo">
+            <img src="matrix_lead_logo.png" alt="LEAD Logo">
         </div>
-
+        <div class="hamburger" id="hamburger-menu">
+            <span></span><span></span><span></span>
+        </div>
         <div class="nav-links" id="nav-menu">
             <a href="index.html" class="active">Home</a>
             <a href="events.html">Events</a>
@@ -42,12 +41,12 @@
     </nav>
 
     <div class="hero-section">
-<div class="lead-fullform">
-    <span>LEARN</span>
-    <span>EMERGE</span>
-    <span>ASPIRE</span>
-    <span>DISCOVER</span>
-</div>
+        <div class="lead-fullform">
+            <span>LEARN</span>
+            <span>EMERGE</span>
+            <span>ASPIRE</span>
+            <span>DISCOVER</span>
+        </div>
         <h1 class="hero-title">MATRIX 4.0</h1>
         
         <div class="typewriter-container">
@@ -85,93 +84,67 @@
     </div>
 
     <script>
-        /* --- 1. RESPONSIVE HAMBURGER & INTERACTION --- */
+        /* --- 1. RESPONSIVE HAMBURGER & INTERACTION (MATCHED TO CONTACT PAGE) --- */
         const hamburger = document.getElementById('hamburger-menu');
         const navMenu = document.getElementById('nav-menu');
 
-        hamburger.addEventListener('click', () => {
-            navMenu.classList.toggle('active');
-            hamburger.classList.toggle('toggle');
-        });
-
-        // Intercept clicks on links for animation
-        document.querySelectorAll('.nav-links a').forEach(link => {
-            link.addEventListener('click', function(e) {
-                // Only prevent default on mobile view where menu is active
-                if (window.innerWidth <= 768) {
-                    e.preventDefault(); // Stop immediate navigation
-                    const href = this.getAttribute('href');
-
-                    // 1. Add class to trigger full underline CSS transition
-                    this.classList.add('nav-clicked');
-
-                    // 2. Wait 800ms (0.8s) for animation to play, then navigate
-                    setTimeout(() => {
-                        window.location.href = href;
-                        // Optional: close menu after navigating (visual cleanup if SPA)
-                        navMenu.classList.remove('active');
-                        hamburger.classList.remove('toggle');
-                        this.classList.remove('nav-clicked');
-                    }, 800);
-                }
+        if(hamburger && navMenu){
+            hamburger.addEventListener('click', () => {
+                navMenu.classList.toggle('active');
+                hamburger.classList.toggle('toggle');
             });
-        });
 
-        /* --- 2. MATRIX RAIN ANIMATION --- */
+            document.querySelectorAll('.nav-links a').forEach(link => {
+                link.addEventListener('click', function(e) {
+                    // Match Contact Page Mobile Logic
+                    if (window.innerWidth <= 968) {
+                        e.preventDefault();
+                        const href = this.getAttribute('href');
+                        this.classList.add('nav-clicked');
+                        setTimeout(() => {
+                            window.location.href = href;
+                            navMenu.classList.remove('active');
+                            hamburger.classList.remove('toggle');
+                            this.classList.remove('nav-clicked');
+                        }, 800);
+                    }
+                });
+            });
+        }
+
+        /* --- 2. MATRIX RAIN ANIMATION (OPTIMIZED) --- */
         const canvas = document.getElementById('matrixCanvas');
         const ctx = canvas.getContext('2d');
-        let width, height;
-        
-        function resizeCanvas() {
-            width = canvas.width = window.innerWidth;
-            height = canvas.height = window.innerHeight;
-            initDrops();
-        }
-        window.addEventListener('resize', resizeCanvas);
-
+        let width, height, columns, drops = [];
         const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ$#@&%';
         const fontSize = 14;
-        let columns;
-        let drops = [];
+        let animationId;
 
         function initDrops() {
+            width = canvas.width = window.innerWidth;
+            height = canvas.height = window.innerHeight;
             columns = Math.ceil(width / fontSize);
             drops = [];
             for (let i = 0; i < columns; i++) {
                 drops.push({
                     y: Math.random() * height,
-                    direction: Math.random() > 0.4 ? 1 : -1, 
-                    speed: Math.random() * 0.15 + 0.05, 
-                    drift: (Math.random() - 0.5) * 0.2 
+                    direction: Math.random() > 0.4 ? 1 : -1,
+                    speed: Math.random() * 0.15 + 0.05,
+                    drift: (Math.random() - 0.5) * 0.2
                 });
             }
         }
-        resizeCanvas();
 
-        let lastTime = 0;
-        const targetFPS = 24; 
-        const frameInterval = 1000 / targetFPS;
-
-        function draw(currentTime) {
-            requestAnimationFrame(draw);
-            const deltaTime = currentTime - lastTime;
-            if (deltaTime < frameInterval) return;
-            lastTime = currentTime - (deltaTime % frameInterval);
-
+        function draw() {
             ctx.clearRect(0, 0, width, height);
             ctx.font = fontSize + 'px monospace';
             ctx.textAlign = 'center';
-            
             for (let i = 0; i < drops.length; i++) {
                 const drop = drops[i];
                 const hue = Math.random() > 0.8 ? 0 : (Math.random() > 0.5 ? 180 : 0);
-                const saturation = 100;
-                const lightness = Math.random() * 40 + 60;
-                const alpha = Math.random() * 0.4 + 0.2;
-
-                ctx.fillStyle = `hsla(${hue}, ${saturation}%, ${lightness}%, ${alpha})`;
+                ctx.fillStyle = `hsla(${hue}, 100%, ${Math.random() * 40 + 60}%, ${Math.random() * 0.4 + 0.2})`;
                 const text = chars[Math.floor(Math.random() * chars.length)];
-                const x = i * fontSize + (drop.y * drop.drift); 
+                const x = i * fontSize + (drop.y * drop.drift);
                 ctx.fillText(text, x, drop.y);
 
                 if (drop.direction === 1) {
@@ -182,8 +155,17 @@
                     if (drop.y < -fontSize && Math.random() > 0.98) { drop.y = height + fontSize; drop.drift = (Math.random() - 0.5) * 0.2; }
                 }
             }
+            animationId = requestAnimationFrame(draw);
         }
-        requestAnimationFrame(draw);
+
+        document.addEventListener('visibilitychange', () => {
+            if (document.hidden) cancelAnimationFrame(animationId);
+            else draw();
+        });
+
+        window.addEventListener('resize', initDrops);
+        initDrops();
+        draw();
 
         /* --- 3. COUNTDOWN TIMER --- */
         const countDownDate = new Date().getTime() + (14 * 24 * 60 * 60 * 1000); 
@@ -196,14 +178,20 @@
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            document.getElementById("days").innerText = days < 10 ? "0" + days : days;
-            document.getElementById("hours").innerText = hours < 10 ? "0" + hours : hours;
-            document.getElementById("minutes").innerText = minutes < 10 ? "0" + minutes : minutes;
-            document.getElementById("seconds").innerText = seconds < 10 ? "0" + seconds : seconds;
+            const dEl = document.getElementById("days");
+            const hEl = document.getElementById("hours");
+            const mEl = document.getElementById("minutes");
+            const sEl = document.getElementById("seconds");
+
+            if(dEl) dEl.innerText = days < 10 ? "0" + days : days;
+            if(hEl) hEl.innerText = hours < 10 ? "0" + hours : hours;
+            if(mEl) mEl.innerText = minutes < 10 ? "0" + minutes : minutes;
+            if(sEl) sEl.innerText = seconds < 10 ? "0" + seconds : seconds;
 
             if (distance < 0) {
                 clearInterval(x);
-                document.querySelector(".timer-container").innerHTML = "<h2 style='color:red; font-family:Orbitron'>PROTOCOL ENGAGED</h2>";
+                const timerContainer = document.querySelector(".timer-container");
+                if(timerContainer) timerContainer.innerHTML = "<h2 style='color:red; font-family:Orbitron'>PROTOCOL ENGAGED</h2>";
             }
         }, 1000);
     </script>
