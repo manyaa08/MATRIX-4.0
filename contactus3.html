@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Us - LEAD Art Heist</title>
+    <style>
+        /* Import fonts */
+        @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Orbitron:wght@500;700&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            overflow-x: hidden;
+            background-color: #050000;
+            color: white;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        /* --- Background Styling --- */
+        #bg-container {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: -1;
+            overflow: hidden;
+        }
+
+        .bg-tint {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(to bottom, rgba(40, 0, 0, 0.85), rgba(10, 0, 0, 0.95));
+            z-index: 1;
+            mix-blend-mode: multiply;
+        }
+
+        #art-collage {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 0;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(2, 1fr);
+            opacity: 0.5;
+            filter: contrast(1.2) grayscale(30%);
+        }
+
+        .collage-item {
+            background-size: cover;
+            background-position: center;
+            box-shadow: inset 0 0 50px #000;
+        }
+
+        .item-1 { 
+            background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/e/ec/Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg/800px-Mona_Lisa%2C_by_Leonardo_da_Vinci%2C_from_C2RMF_retouched.jpg'); 
+            background-position: center 20%; 
+        }
+        .item-2 { background-image: url('https://images.unsplash.com/photo-1578321272176-b7bbc0679853?q=80&w=1000&auto=format&fit=crop'); }
+        .item-3 { background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/a/a4/Rembrandt_The_Night_Watch.jpg/1200px-Rembrandt_The_Night_Watch.jpg'); }
+        .item-4 { background-image: url('https://images.unsplash.com/photo-1580136608260-4eb11f4b24fe?q=80&w=1000&auto=format&fit=crop'); }
+        .item-5 { background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/0/0b/Sandro_Botticelli_-_La_nascita_di_Venere_-_Google_Art_Project_-_edited.jpg/1200px-Sandro_Botticelli_-_La_nascita_di_Venere_-_Google_Art_Project_-_edited.jpg'); }
+        .item-6 { background-image: url('https://upload.wikimedia.org/wikipedia/commons/e/ea/Van_Gogh_-_Starry_Night_-_Google_Art_Project.jpg'); }
+
+        canvas {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            z-index: 2;
+            opacity: 0.7;
+        }
+
+        /* --- Navigation Bar --- */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 50px; /* Keeps margins uniform */
+            background: rgba(0, 0, 0, 0.85);
+            backdrop-filter: blur(15px);
+            border-bottom: 1px solid rgba(255, 50, 50, 0.3);
+            position: fixed;
+            top: 0;
+            width: 100%;
+            height: 80px;
+            z-index: 1000;
+            transition: all 0.3s ease;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            z-index: 2001; 
+        }
+
+        .logo img {
+            height: 45px; /* UPDATED HEIGHT */
+            width: auto;
+            display: block;
+            transition: transform 0.3s ease;
+        }
+
+        .logo img:hover {
+            transform: scale(1.05);
+        }
+
+        /* Desktop Nav Links */
+        .nav-links {
+            display: flex;
+            gap: 30px;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #ccc;
+            font-size: 0.9rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            position: relative;
+            padding: 5px 0;
+        }
+
+        .nav-links a:hover, .nav-links a.active {
+            color: #ff3333;
+            text-shadow: 0 0 8px rgba(255, 0, 0, 0.6);
+        }
+
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            width: 0;
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: #ff3333;
+            transition: width 0.3s ease;
+        }
+
+        .nav-links a:hover::after, .nav-links a.active::after {
+            width: 100%;
+        }
+
+        /* JS Animation Class for Underline */
+        .nav-links a.nav-clicked::after {
+            width: 100%;
+            transition: width 0.5s ease-out;
+        }
+
+        /* --- Hamburger Menu Icon --- */
+        .hamburger {
+            display: none; /* Hidden on desktop */
+            cursor: pointer;
+            flex-direction: column;
+            gap: 5px;
+            z-index: 2001; /* Very high z-index to ensure clickability */
+        }
+
+        .hamburger span {
+            display: block;
+            width: 25px;
+            height: 3px;
+            background-color: #fff;
+            transition: all 0.3s ease;
+        }
+
+        /* --- Main Content Layout --- */
+        .main-content {
+            flex: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 140px 20px 60px 20px;
+        }
+
+        .content-layout-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 50px;
+            width: 100%;
+            max-width: 1100px;
+        }
+
+        /* --- Contact Form Box --- */
+        .contact-container {
+            background: rgba(20, 0, 0, 0.75);
+            backdrop-filter: blur(20px);
+            border: 1px solid rgba(255, 50, 50, 0.3);
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.5), inset 0 0 30px rgba(255, 0, 0, 0.1);
+            padding: 50px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 800px;
+            flex: 1 1 auto;
+            animation: fadeInUp 1s ease forwards;
+        }
+
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* --- SOCIAL DOCK --- */
+        .social-dock-vertical {
+            animation: fadeInUp 1s ease forwards 0.2s;
+            opacity: 0;
+            flex: 0 0 auto;
+            z-index: 10;
+        }
+
+        .card-vertical {
+            width: fit-content;
+            height: auto;
+            background-color: rgba(20, 0, 0, 0.6);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 30px 15px;
+            gap: 25px;
+            border-radius: 35px;
+            border: 1px solid rgba(255, 0, 0, 0.3);
+            backdrop-filter: blur(10px);
+            box-shadow: 0px 10px 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .social-container {
+            width: 52px;
+            height: 52px;
+            /* Flex properties to ensure icon stays centered */
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 50%;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            text-decoration: none;
+            transition-duration: .3s;
+            flex-shrink: 0; /* Prevent shrinking */
+        }
+
+        .social-container svg {
+            width: 24px;
+            height: 24px;
+            fill: #ccc;
+            transition: all 0.3s;
+        }
+
+        .social-container:hover {
+            background-color: rgba(180, 0, 0, 0.2);
+            transform: scale(1.1);
+            border-color: #ff0000;
+            box-shadow: 0 0 15px rgba(255, 0, 0, 0.4);
+        }
+
+        .social-container:hover svg {
+            fill: #ff3333;
+            filter: drop-shadow(0 0 5px #ff0000);
+        }
+
+        /* --- Form Internal Styling --- */
+        .contact-header { text-align: center; margin-bottom: 35px; }
+        .contact-header h1 { font-family: 'Orbitron', sans-serif; font-size: 2.8rem; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 2px; color: #fff; text-shadow: 0 2px 10px rgba(255, 0, 0, 0.4); }
+        .contact-header p { color: #bbb; font-size: 1rem; font-weight: 300; }
+        .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 25px; }
+        .form-group { position: relative; }
+        .full-width { grid-column: span 2; }
+        .form-input { width: 100%; background: rgba(255, 255, 255, 0.07); border: 1px solid rgba(255, 255, 255, 0.15); padding: 18px 15px; border-radius: 4px; color: #fff; font-family: 'Montserrat', sans-serif; font-size: 1rem; outline: none; transition: all 0.3s ease; }
+        .form-label { position: absolute; left: 15px; top: 18px; color: #888; pointer-events: none; transition: all 0.3s ease; font-size: 0.95rem; background-color: transparent; padding: 0 5px; }
+        .form-input:focus, .form-input:not(:placeholder-shown) { border-color: #ff3333; background: rgba(40, 0, 0, 0.3); box-shadow: 0 0 15px rgba(255, 0, 0, 0.1); }
+        .form-input:focus ~ .form-label, .form-input:not(:placeholder-shown) ~ .form-label { top: -10px; left: 10px; font-size: 0.8rem; color: #ff3333; background-color: #1a0505; border-radius: 2px; }
+        textarea.form-input { resize: vertical; min-height: 120px; }
+        .submit-btn { grid-column: span 2; padding: 18px; background: linear-gradient(90deg, #800000, #cc0000, #800000); background-size: 200% auto; border: none; color: white; font-family: 'Orbitron', sans-serif; font-weight: 700; font-size: 1.2rem; cursor: pointer; border-radius: 4px; text-transform: uppercase; letter-spacing: 3px; transition: all 0.4s ease; margin-top: 15px; box-shadow: 0 5px 15px rgba(204, 0, 0, 0.3); }
+        .submit-btn:hover { background-position: right center; box-shadow: 0 8px 25px rgba(255, 0, 0, 0.5); transform: translateY(-2px); }
+
+        /* --- MOBILE RESPONSIVE --- */
+        @media (max-width: 968px) {
+            nav { padding: 0 20px; }
+            .hamburger { display: flex; } /* Show Hamburger */
+
+            /* Mobile Menu Container */
+            .nav-links {
+                position: fixed;
+                top: 0;
+                left: 0;
+                width: 100vw;
+                height: 100vh;
+                
+                /* Gradient: Transparent on Left, Black on Right */
+                background: linear-gradient(to left, #000000 0%, #000000 55%, rgba(0,0,0,0.1) 100%);
+                
+                /* Blur effect */
+                backdrop-filter: blur(15px);
+                -webkit-backdrop-filter: blur(15px);
+
+                flex-direction: column;
+                align-items: flex-end; /* Text align right */
+                justify-content: center;
+                padding-right: 50px;
+                
+                /* Start hidden to the RIGHT */
+                transform: translateX(100%);
+                opacity: 0;
+                transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
+                
+                z-index: 2000; /* Just below Hamburger */
+                pointer-events: none; /* Prevent clicks when hidden */
+            }
+
+            .nav-links.active {
+                transform: translateX(0);
+                opacity: 1;
+                pointer-events: all;
+            }
+
+            .nav-links a {
+                font-size: 1.8rem;
+                margin: 20px 0;
+                width: auto;
+                text-align: right;
+                display: block;
+            }
+
+            /* Underline animates from right */
+            .nav-links a::after {
+                left: auto; right: 0;
+            }
+
+            /* Hamburger X Animation */
+            .hamburger.toggle span:nth-child(1) { transform: rotate(45deg) translate(5px, 6px); }
+            .hamburger.toggle span:nth-child(2) { opacity: 0; }
+            .hamburger.toggle span:nth-child(3) { transform: rotate(-45deg) translate(5px, -6px); }
+
+            /* Content Layout Changes */
+            .main-content { padding: 180px 15px 40px 15px; }
+            .content-layout-wrapper { flex-direction: column; gap: 40px; }
+            
+            /* Social Dock Fix for Mobile */
+            .social-dock-vertical {
+                width: 100%;
+                display: flex;
+                justify-content: center;
+            }
+
+            .card-vertical { 
+                flex-direction: row; /* Switch to horizontal row */
+                flex-wrap: wrap;     /* Allow wrapping if screen is very small */
+                justify-content: center;
+                padding: 15px 25px; 
+                border-radius: 50px; 
+                gap: 15px; 
+                width: 100%;
+                max-width: 400px; /* Prevent it from getting too wide */
+            }
+
+            .form-grid { grid-template-columns: 1fr; }
+            .full-width, .submit-btn { grid-column: span 1; }
+            #art-collage { grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(3, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="bg-container">
+        <div id="art-collage">
+            <div class="collage-item item-1"></div>
+            <div class="collage-item item-2"></div>
+            <div class="collage-item item-3"></div>
+            <div class="collage-item item-4"></div>
+            <div class="collage-item item-5"></div>
+            <div class="collage-item item-6"></div>
+        </div>
+        <div class="bg-tint"></div>
+        <canvas id="matrixCanvas"></canvas>
+    </div>
+
+    <nav>
+        <div class="logo">
+            <img src="lead_white1.png" alt="LEAD Logo">
+        </div>
+
+        <div class="hamburger" id="hamburger-menu">
+            <span></span>
+            <span></span>
+            <span></span>
+        </div>
+
+        <div class="nav-links" id="nav-menu">
+            <a href="index.html">Home</a>
+            <a href="events.html">Events</a>
+            <a href="sponsors.html">Sponsors</a>
+            <a href="contact.html" class="active">Contact Us</a>
+        </div>
+    </nav>
+
+    <div class="main-content">
+        <div class="content-layout-wrapper">
+            
+            <div class="contact-container">
+                <div class="contact-header">
+                    <h1>Initiate Contact</h1>
+                    <p>Have inquiries about the event? Secure channel open.</p>
+                </div>
+                <form class="form-grid">
+                    <div class="form-group"><input type="text" id="fname" class="form-input" placeholder=" " required><label for="fname" class="form-label">First Name</label></div>
+                    <div class="form-group"><input type="text" id="lname" class="form-input" placeholder=" " required><label for="lname" class="form-label">Last Name</label></div>
+                    <div class="form-group"><input type="email" id="email" class="form-input" placeholder=" " required><label for="email" class="form-label">Email Address</label></div>
+                    <div class="form-group"><input type="tel" id="phone" class="form-input" placeholder=" " required><label for="phone" class="form-label">Phone Number</label></div>
+                    <div class="form-group full-width"><textarea id="message" rows="5" class="form-input" placeholder=" " required></textarea><label for="message" class="form-label">Message / Intel</label></div>
+                    <button type="submit" class="submit-btn">Transmit Data</button>
+                </form>
+            </div>
+
+            <div class="social-dock-vertical">
+                <div class="card-vertical">
+                    <a href="https://www.instagram.com/lead_tiet/" target="_blank" class="social-container" aria-label="Instagram">
+                        <svg viewBox="0 0 448 512"><path d="M224.1 141c-63.6 0-114.9 51.3-114.9 114.9s51.3 114.9 114.9 114.9S339 319.5 339 255.9 287.7 141 224.1 141zm0 189.6c-41.1 0-74.7-33.5-74.7-74.7s33.5-74.7 74.7-74.7 74.7 33.5 74.7 74.7-33.6 74.7-74.7 74.7zm146.4-194.3c0 14.9-12 26.8-26.8 26.8-14.9 0-26.8-12-26.8-26.8s12-26.8 26.8-26.8 26.8 12 26.8 26.8zm76.1 27.2c-1.7-35.9-9.9-67.7-36.2-93.9-26.2-26.2-58-34.4-93.9-36.2-37-2.1-147.9-2.1-184.9 0-35.8 1.7-67.6 9.9-93.9 36.1s-34.4 58-36.2 93.9c-2.1 37-2.1 147.9 0 184.9 1.7 35.9 9.9 67.7 36.2 93.9s58 34.4 93.9 36.2c37 2.1 147.9 2.1 184.9 0 35.9-1.7 67.7-9.9 93.9-36.2 26.2-26.2 34.4-58 36.2-93.9 2.1-37 2.1-147.8 0-184.8zM398.8 388c-7.8 19.6-22.9 34.7-42.6 42.6-29.5 11.7-99.5 9-132.1 9s-102.7 2.6-132.1-9c-19.6-7.8-34.7-22.9-42.6-42.6-11.7-29.5-9-99.5-9-132.1s-2.6-102.7 9-132.1c7.8-19.6 22.9-34.7 42.6-42.6 29.5-11.7 99.5-9 132.1-9s102.7-2.6 132.1 9c19.6 7.8 34.7 22.9 42.6 42.6 11.7 29.5 9 99.5 9 132.1s2.7 102.7-9 132.1z"></path></svg>
+                    </a>
+                    <a href="https://www.youtube.com/@leadsociety7357/videos" target="_blank" class="social-container" aria-label="YouTube">
+                        <svg viewBox="0 0 576 512"><path d="M549.655 124.396c-4.73-21.97-21.956-39.196-43.926-43.926C466.963 70 288 70 288 70s-178.963 0-217.728 10.47c-21.97 4.73-39.196 21.956-43.926 43.926C16 163.16 16 256 16 256s0 92.84 10.345 131.604c4.73 21.97 21.956 39.196 43.926 43.926C109.037 442 288 442 288 442s178.963 0 217.728-10.47c21.97-4.73 39.196-21.956 43.926-43.926C560 348.84 560 256 560 256s0-92.84-10.345-131.604zM232 336V176l144 80-144 80z"></path></svg>
+                    </a>
+                    <a href="https://www.facebook.com/leadthapar/" target="_blank" class="social-container" aria-label="Facebook">
+                        <svg viewBox="0 0 512 512"><path d="M504 256C504 119 393 8 256 8S8 119 8 256c0 123.78 90.69 226.38 209.25 245V327.69h-63V256h63v-54.64c0-62.15 37-96.48 93.67-96.48 27.14 0 55.52 4.84 55.52 4.84v61h-31.28c-30.8 0-40.41 19.12-40.41 38.73V256h68.78l-11 71.69h-57.78V501C413.31 482.38 504 379.78 504 256z"></path></svg>
+                    </a>
+                    <a href="https://lead2025.netlify.app/" target="_blank" class="social-container" aria-label="Website">
+                        <svg viewBox="0 0 512 512"><path d="M352 256c0 22.2-1.2 43.6-3.3 64H163.3c-2.2-20.4-3.3-41.8-3.3-64s1.2-43.6 3.3-64h185.4c2.2 20.4 3.3 41.8 3.3 64zm28.8-64h1
