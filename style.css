@@ -1,5 +1,5 @@
   /* --- RESET & CORE --- */
-        * { margin: 0; padding: 0; box-sizing: border-box; }
+       * { margin: 0; padding: 0; box-sizing: border-box; }
         
         body {
             font-family: 'Montserrat', sans-serif;
@@ -243,12 +243,22 @@
                 will-change: transform, opacity;
             }
             .nav-links.active { transform: translateX(0); opacity: 1; pointer-events: all; }
-            .nav-links a { font-size: 1.8rem; margin: 20px 0; width: auto; text-align: right; display: block; }
+            
+            /* --- UPDATED HAMBURGER LINKS STYLING (SMALLER) --- */
+            .nav-links a { 
+                font-size: 1.1rem; /* Changed from 1.8rem to 1.1rem */
+                margin: 10px 0;    /* Changed from 20px to 10px */
+                width: auto; 
+                text-align: right; 
+                display: block; 
+                font-weight: 500; /* Lighter font weight */
+            }
             .nav-links a::after { left: auto; right: 0; }
 
-            .hamburger.toggle span:nth-child(1) { transform: rotate(45deg) translate(5px, 6px); }
+            /* Updated X Animation for Cleaner Look */
+            .hamburger.toggle span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
             .hamburger.toggle span:nth-child(2) { opacity: 0; }
-            .hamburger.toggle span:nth-child(3) { transform: rotate(-45deg) translate(5px, -6px); }
+            .hamburger.toggle span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
             
             /* Home Content Adjustments */
             .hero-section { padding-top: 100px; }
