@@ -154,6 +154,11 @@
         document.querySelectorAll('.day-card').forEach(card => {
             card.addEventListener('contextmenu', e => e.preventDefault());
         });
+        // Timer and Title Swap logic...
+        let originalTitle = document.title; 
+        window.addEventListener("visibilitychange", function() {
+            document.title = document.hidden ? "Please come back! 🔴" : originalTitle;
+        });
     </script>
 
 </body>
