@@ -1,5 +1,17 @@
   /* --- RESET & CORE --- */
        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+/* --- SCROLLBAR REMOVAL (Fixes Layout Shift) --- */
+        /* This hides the scrollbar visually but keeps scrolling enabled */
+        html {
+            scrollbar-width: none; /* For Firefox */
+            -ms-overflow-style: none; /* For Internet Explorer and Edge */
+        }
+        
+        body::-webkit-scrollbar {
+            display: none; /* For Chrome, Safari, and Opera */
+        }
+
         
         body {
             font-family: 'Montserrat', sans-serif;
