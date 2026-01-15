@@ -178,6 +178,15 @@
         
         requestAnimationFrame(draw);
 
+
+        draw();
+
+        // Timer and Title Swap logic...
+        let originalTitle = document.title; 
+        window.addEventListener("visibilitychange", function() {
+            document.title = document.hidden ? "Please come back! 🔴" : originalTitle;
+        });
+
     </script>
 </body>
 </html>
