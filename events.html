@@ -2,15 +2,40 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>EVENTS - MATRIX 4.0 | LEAD</title>
     <link rel="icon" type="image/png" href="images/Favicon.png">
     <link rel="apple-touch-icon" href="images/Favicon.png">
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
-    <link rel = "stylesheet" href = "events.css">
+    <link rel="stylesheet" href="events.css">
 
+    <style>
+        /* CRITICAL MOBILE OPTIMIZATIONS */
+        .day-card {
+            touch-action: manipulation; 
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+            -webkit-touch-callout: none;
+            cursor: pointer;
+        }
+
+        /* Prevent the video from intercepting taps */
+        .vault-video {
+            pointer-events: none;
+        }
+
+        /* Smooth animation timing */
+        .cover {
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Prevent page from scrolling horizontally during animation */
+        body {
+            overflow-x: hidden;
+        }
+    </style>
 </head>
 <body>
 
@@ -38,9 +63,7 @@
 
         <div class="events-grid">
             
-            <div class="day-card" 
-                 onmouseenter="playVault(this)" onmouseleave="resetVault(this)"
-                 ontouchstart="playVault(this)" ontouchend="resetVault(this)">
+            <div class="day-card">
                 <div class="interior-content">
                     <h2 class="rulebook-heading">RULEBOOK</h2>
                     <a href="#" class="view-btn">ACCESS FILE</a>
@@ -58,9 +81,7 @@
                 </div>
             </div>
 
-            <div class="day-card" 
-                 onmouseenter="playVault(this)" onmouseleave="resetVault(this)"
-                 ontouchstart="playVault(this)" ontouchend="resetVault(this)">
+            <div class="day-card">
                 <div class="interior-content">
                     <h2 class="rulebook-heading">RULEBOOK</h2>
                     <a href="#" class="view-btn">ACCESS FILE</a>
@@ -78,9 +99,7 @@
                 </div>
             </div>
 
-            <div class="day-card" 
-                 onmouseenter="playVault(this)" onmouseleave="resetVault(this)"
-                 <!-- ontouchstart="playVault(this)" ontouchend="resetVault(this)"> -->
+            <div class="day-card">
                 <div class="interior-content">
                     <h2 class="rulebook-heading">RULEBOOK</h2>
                     <a href="#" class="view-btn">ACCESS FILE</a>
@@ -111,99 +130,78 @@
                 navMenu.classList.toggle('active');
                 hamburger.classList.toggle('toggle');
             });
-
-            document.querySelectorAll('.nav-links a').forEach(link => {
-                link.addEventListener('click', function(e) {
-                    if (window.innerWidth <= 968) {
-                        e.preventDefault();
-                        const href = this.getAttribute('href');
-                        this.classList.add('nav-clicked');
-                        setTimeout(() => {
-                            window.location.href = href;
-                            navMenu.classList.remove('active');
-                            hamburger.classList.remove('toggle');
-                            this.classList.remove('nav-clicked');
-                        }, 800);
-                    }
-                });
-            });
         }
 
-        /* --- EVENTS ANIMATION LOGIC --- */
-        document.querySelectorAll('.day-card').forEach(card => {
+        /* --- VAULT ANIMATION LOGIC --- */
+        const allCards = document.querySelectorAll('.day-card');
+
+        function openVault(card) {
+            // Close any other open vaults first
+            allCards.forEach(other => { if(other !== card) closeVault(other); });
+
             const video = card.querySelector('.vault-video');
-            let closeTimeout;
+            video.currentTime = 0;
+            
+            const playPromise = video.play();
+            if (playPromise !== undefined) {
+                playPromise.then(() => {
+                    card.classList.add('unlocked');
+                }).catch(() => {
+                    card.classList.add('unlocked');
+                });
+            }
+        }
 
-            const openVault = () => {
-                clearTimeout(closeTimeout); // Cancel any pending close
-                video.currentTime = 0;
-                
-                // Play video and add class
-                const playPromise = video.play();
-                if (playPromise !== undefined) {
-                    playPromise.then(() => {
-                        card.classList.add('unlocked');
-                    }).catch(() => {
-                        // Fallback if autoplay is blocked
-                        card.classList.add('unlocked');
-                    });
-                }
-            };
+        function closeVault(card) {
+            const video = card.querySelector('.vault-video');
+            card.classList.remove('unlocked');
+            video.pause();
+            video.currentTime = 0;
+        }
 
-            const closeVault = () => {
-                card.classList.remove('unlocked');
-                video.pause();
-                video.currentTime = 0;
-            };
+        allCards.forEach(card => {
+            // 1. LAPTOP HOVER
+            card.addEventListener('mouseenter', () => {
+                if (window.matchMedia("(hover: hover)").matches) openVault(card);
+            });
+            card.addEventListener('mouseleave', () => {
+                if (window.matchMedia("(hover: hover)").matches) closeVault(card);
+            });
 
-            // 1. LAPTOP: Mouse Hover
-            card.addEventListener('mouseenter', openVault);
-            card.addEventListener('mouseleave', closeVault);
-
-            // 2. MOBILE: Instant Touch
-            // 'pointerdown' triggers immediately on touch without the 300ms delay
+            // 2. TOGGLE ON TAP (Universal)
             card.addEventListener('pointerdown', (e) => {
-                openVault();
+                e.stopPropagation(); // Prevents the "document" click from firing immediately
                 
-                // On mobile, keep it open for 3 seconds so they can click the button
-                if (e.pointerType === 'touch') {
-                    clearTimeout(closeTimeout);
-                    closeTimeout = setTimeout(closeVault, 3000);
+                if (card.classList.contains('unlocked')) {
+                    closeVault(card);
+                } else {
+                    openVault(card);
                 }
             });
 
-            // Prevent the annoying mobile context menu (long-press)
+            // Prevent context menu (long-press)
             card.addEventListener('contextmenu', e => e.preventDefault());
         });
 
-        //Old Animation Trigger Function
-        // function playVault(card) {
-        //     const video = card.querySelector('.vault-video');
-        //     video.currentTime = 0;
-            
-        //     const playPromise = video.play();
-        //     if (playPromise !== undefined) {
-        //         playPromise.then(_ => {
-        //             card.classList.add('unlocked');
-        //         }).catch(err => {
-        //             card.classList.add('unlocked');
-        //         });
-        //     }
-        // }
+        // 3. CLOSE ON EXTERNAL TAP
+        // This closes any open vault if the user taps anywhere on the screen background
+        document.addEventListener('pointerdown', (e) => {
+            allCards.forEach(card => {
+                if (!card.contains(e.target)) {
+                    closeVault(card);
+                }
+            });
+        });
 
-        // function resetVault(card) {
-        //     const video = card.querySelector('.vault-video');
-        //     card.classList.remove('unlocked');
-        //     video.pause();
-        //     video.currentTime = 0;
-        // }
+        // 4. PREVENT BUTTON CLICKS FROM CLOSING THE VAULT
+        // This ensures that when they click the actual "Access File" link, the vault doesn't toggle shut
+        document.querySelectorAll('.view-btn').forEach(btn => {
+            btn.addEventListener('pointerdown', (e) => {
+                e.stopPropagation(); 
+            });
+        });
 
-        // document.querySelectorAll('.day-card').forEach(card => {
-        //     card.addEventListener('contextmenu', e => e.preventDefault());
-        // });
-
-
-        // Timer and Title Swap logic...
+        /* --- TITLE SWAP LOGIC --- */
         let originalTitle = document.title; 
         window.addEventListener("visibilitychange", function() {
             document.title = document.hidden ? "Please come back! 🔴" : originalTitle;
