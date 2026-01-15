@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MATRIX 4.0 | LEAD</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
+    <link rel = "stylesheet" href = "events.css">
+</head>
+<body>
+
+    <div class="page-wrapper">
+        <nav>
+            <div class="logo">LEAD</div>
+            <div class="nav-links" id="navLinks">
+                <a href="#">Home</a>
+                <a href="#" class="active">Events</a>
+                <a href="#">Sponsors</a>
+                <a href="#">Contact Us</a>
+            </div>
+            <div class="hamburger" id="hamburger"><span></span><span></span><span></span></div>
+        </nav>
+
+        <div class="hero">
+            <h1>MATRIX 4.0</h1>
+            <p>Master the System. Unlock the Future.</p>
+        </div>
+
+        <div class="events-grid">
+            
+            <div class="day-card" 
+                 onmouseenter="playVault(this)" onmouseleave="resetVault(this)"
+                 ontouchstart="playVault(this)" ontouchend="resetVault(this)">
+                <div class="interior-content">
+                    <h2 class="rulebook-heading">RULEBOOK</h2>
+                    <a href="#" class="view-btn">ACCESS FILE</a>
+                </div>
+                <div class="cover">
+                    <div class="door-front">
+                        <video class="vault-video" muted playsinline preload="auto">
+                            <source src="images/Vault_Handle_Animation_Generation.mp4" type="video/mp4">
+                        </video>
+                        <div class="text-overlay">
+                            <span class="day-text">DAY 01</span>
+                        </div>
+                    </div>
+                    <div class="door-back"></div>
+                </div>
+            </div>
+
+            <div class="day-card" 
+                 onmouseenter="playVault(this)" onmouseleave="resetVault(this)"
+                 ontouchstart="playVault(this)" ontouchend="resetVault(this)">
+                <div class="interior-content">
+                    <h2 class="rulebook-heading">RULEBOOK</h2>
+                    <a href="#" class="view-btn">ACCESS FILE</a>
+                </div>
+                <div class="cover">
+                    <div class="door-front">
+                        <video class="vault-video" muted playsinline preload="auto">
+                            <source src="images/Vault_Handle_Animation_Generation.mp4" type="video/mp4">
+                        </video>
+                        <div class="text-overlay">
+                            <span class="day-text">DAY 02</span>
+                        </div>
+                    </div>
+                    <div class="door-back"></div>
+                </div>
+            </div>
+
+            <div class="day-card" 
+                 onmouseenter="playVault(this)" onmouseleave="resetVault(this)"
+                 ontouchstart="playVault(this)" ontouchend="resetVault(this)">
+                <div class="interior-content">
+                    <h2 class="rulebook-heading">RULEBOOK</h2>
+                    <a href="#" class="view-btn">ACCESS FILE</a>
+                </div>
+                <div class="cover">
+                    <div class="door-front">
+                        <video class="vault-video" muted playsinline preload="auto">
+                            <source src="images/Vault_Handle_Animation_Generation.mp4" type="video/mp4">
+                        </video>
+                        <div class="text-overlay">
+                            <span class="day-text">DAY 03</span>
+                        </div>
+                    </div>
+                    <div class="door-back"></div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Nav Menu
+        const hamburger = document.getElementById('hamburger');
+        const navLinks = document.getElementById('navLinks');
+        hamburger.addEventListener('click', () => {
+            navLinks.classList.toggle('active');
+            hamburger.classList.toggle('toggle');
+        });
+
+        // Optimized Animation Logic
+        function playVault(card) {
+            const video = card.querySelector('.vault-video');
+            video.currentTime = 0;
+            
+            const playPromise = video.play();
+            if (playPromise !== undefined) {
+                playPromise.then(_ => {
+                    // Start the sequence
+                    card.classList.add('unlocked');
+                }).catch(err => {
+                    // Fallback for strict browsers
+                    card.classList.add('unlocked');
+                });
+            }
+        }
+
+        function resetVault(card) {
+            const video = card.querySelector('.vault-video');
+            // Remove state immediately
+            card.classList.remove('unlocked');
+            // Kill video immediately to prevent frame-dragging glitch
+            video.pause();
+            video.currentTime = 0;
+        }
+
+        // Prevent mobile context menu disruption
+        document.querySelectorAll('.day-card').forEach(card => {
+            card.addEventListener('contextmenu', e => e.preventDefault());
+        });
+    </script>
+
+</body>
+</html>
