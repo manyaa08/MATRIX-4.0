@@ -267,5 +267,5 @@
             -webkit-tap-highlight-color: transparent; /* Removes the blue highlight on tap */
             -webkit-touch-callout: none;              /* Prevents the system context menu */
             user-select: none;                         /* Prevents text selection */
-            touch-action: manipulation;               /* Optimizes for taps, ignores double-tap zoom */
+            touch-action: none;               /* Optimizes for taps, ignores double-tap zoom */
 }

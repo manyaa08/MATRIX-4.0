@@ -130,30 +130,79 @@
         }
 
         /* --- EVENTS ANIMATION LOGIC --- */
-        function playVault(card) {
-            const video = card.querySelector('.vault-video');
-            video.currentTime = 0;
-            
-            const playPromise = video.play();
-            if (playPromise !== undefined) {
-                playPromise.then(_ => {
-                    card.classList.add('unlocked');
-                }).catch(err => {
-                    card.classList.add('unlocked');
-                });
-            }
-        }
-
-        function resetVault(card) {
-            const video = card.querySelector('.vault-video');
-            card.classList.remove('unlocked');
-            video.pause();
-            video.currentTime = 0;
-        }
-
         document.querySelectorAll('.day-card').forEach(card => {
+            const video = card.querySelector('.vault-video');
+            let closeTimeout;
+
+            const openVault = () => {
+                clearTimeout(closeTimeout); // Cancel any pending close
+                video.currentTime = 0;
+                
+                // Play video and add class
+                const playPromise = video.play();
+                if (playPromise !== undefined) {
+                    playPromise.then(() => {
+                        card.classList.add('unlocked');
+                    }).catch(() => {
+                        // Fallback if autoplay is blocked
+                        card.classList.add('unlocked');
+                    });
+                }
+            };
+
+            const closeVault = () => {
+                card.classList.remove('unlocked');
+                video.pause();
+                video.currentTime = 0;
+            };
+
+            // 1. LAPTOP: Mouse Hover
+            card.addEventListener('mouseenter', openVault);
+            card.addEventListener('mouseleave', closeVault);
+
+            // 2. MOBILE: Instant Touch
+            // 'pointerdown' triggers immediately on touch without the 300ms delay
+            card.addEventListener('pointerdown', (e) => {
+                openVault();
+                
+                // On mobile, keep it open for 3 seconds so they can click the button
+                if (e.pointerType === 'touch') {
+                    clearTimeout(closeTimeout);
+                    closeTimeout = setTimeout(closeVault, 3000);
+                }
+            });
+
+            // Prevent the annoying mobile context menu (long-press)
             card.addEventListener('contextmenu', e => e.preventDefault());
         });
+
+        //Old Animation Trigger Function
+        // function playVault(card) {
+        //     const video = card.querySelector('.vault-video');
+        //     video.currentTime = 0;
+            
+        //     const playPromise = video.play();
+        //     if (playPromise !== undefined) {
+        //         playPromise.then(_ => {
+        //             card.classList.add('unlocked');
+        //         }).catch(err => {
+        //             card.classList.add('unlocked');
+        //         });
+        //     }
+        // }
+
+        // function resetVault(card) {
+        //     const video = card.querySelector('.vault-video');
+        //     card.classList.remove('unlocked');
+        //     video.pause();
+        //     video.currentTime = 0;
+        // }
+
+        // document.querySelectorAll('.day-card').forEach(card => {
+        //     card.addEventListener('contextmenu', e => e.preventDefault());
+        // });
+
+
         // Timer and Title Swap logic...
         let originalTitle = document.title; 
         window.addEventListener("visibilitychange", function() {
