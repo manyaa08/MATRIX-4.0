@@ -197,6 +197,14 @@
                 if(timerContainer) timerContainer.innerHTML = "<h2 style='color:red; font-family:Orbitron'>PROTOCOL ENGAGED</h2>";
             }
         }, 1000);
+
+        draw();
+
+        // Timer and Title Swap logic...
+        let originalTitle = document.title; 
+        window.addEventListener("visibilitychange", function() {
+            document.title = document.hidden ? "Please come back! 🔴" : originalTitle;
+        });
     </script>
 </body>
 </html>
