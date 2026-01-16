@@ -115,13 +115,18 @@
             });
         }
 
-        /* --- 2. MATRIX RAIN ANIMATION (OPTIMIZED) --- */
+        /* --- 2. OPTIMIZED MATRIX RAIN (FIXED: KEEPS BACKGROUND VISIBLE) --- */
         const canvas = document.getElementById('matrixCanvas');
-        const ctx = canvas.getContext('2d');
+        // FIX: Removed { alpha: false } to allow background images to show through!
+        const ctx = canvas.getContext('2d'); 
         let width, height, columns, drops = [];
         const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ$#@&%';
         const fontSize = 14;
         let animationId;
+        
+        // Performance: Cap FPS to 30 to prevent mobile battery drain/lag
+        let lastTime = 0;
+        const fpsInterval = 1000 / 30; 
 
         function initDrops() {
             width = canvas.width = window.innerWidth;
@@ -138,72 +143,112 @@
             }
         }
 
-        function draw() {
+        function draw(timeStamp) {
+            animationId = requestAnimationFrame(draw);
+
+            // Throttle FPS
+            const elapsed = timeStamp - lastTime;
+            if (elapsed < fpsInterval) return;
+            lastTime = timeStamp - (elapsed % fpsInterval);
+
+            // Clear to transparent so background images show
             ctx.clearRect(0, 0, width, height);
+            
             ctx.font = fontSize + 'px monospace';
             ctx.textAlign = 'center';
+            
             for (let i = 0; i < drops.length; i++) {
                 const drop = drops[i];
+                
+                if (drop.y < -50 || drop.y > height + 50) {
+                      updateDropPosition(drop);
+                      continue;
+                }
+
                 const hue = Math.random() > 0.8 ? 0 : (Math.random() > 0.5 ? 180 : 0);
-                ctx.fillStyle = `hsla(${hue}, 100%, ${Math.random() * 40 + 60}%, ${Math.random() * 0.4 + 0.2})`;
+                // Restored varying opacity for depth
+                ctx.fillStyle = `hsla(${hue}, 100%, ${Math.floor(Math.random() * 40 + 60)}%, ${Math.random() * 0.4 + 0.2})`;
+                
                 const text = chars[Math.floor(Math.random() * chars.length)];
                 const x = i * fontSize + (drop.y * drop.drift);
+                
                 ctx.fillText(text, x, drop.y);
-
-                if (drop.direction === 1) {
-                    drop.y += fontSize * drop.speed;
-                    if (drop.y > height + fontSize && Math.random() > 0.98) { drop.y = -fontSize; drop.drift = (Math.random() - 0.5) * 0.2; }
-                } else {
-                    drop.y -= fontSize * drop.speed;
-                    if (drop.y < -fontSize && Math.random() > 0.98) { drop.y = height + fontSize; drop.drift = (Math.random() - 0.5) * 0.2; }
-                }
+                updateDropPosition(drop);
             }
-            animationId = requestAnimationFrame(draw);
+        }
+
+        function updateDropPosition(drop) {
+            if (drop.direction === 1) {
+                drop.y += fontSize * drop.speed;
+                if (drop.y > height + fontSize && Math.random() > 0.98) { drop.y = -fontSize; drop.drift = (Math.random() - 0.5) * 0.2; }
+            } else {
+                drop.y -= fontSize * drop.speed;
+                if (drop.y < -fontSize && Math.random() > 0.98) { drop.y = height + fontSize; drop.drift = (Math.random() - 0.5) * 0.2; }
+            }
         }
 
         document.addEventListener('visibilitychange', () => {
             if (document.hidden) cancelAnimationFrame(animationId);
-            else draw();
+            else {
+                lastTime = performance.now(); 
+                animationId = requestAnimationFrame(draw);
+            }
         });
 
-        window.addEventListener('resize', initDrops);
+        window.addEventListener('resize', () => {
+            clearTimeout(window.resizeTimer);
+            window.resizeTimer = setTimeout(initDrops, 200);
+        });
+        
         initDrops();
-        draw();
+        requestAnimationFrame(draw);
 
-        /* --- 3. COUNTDOWN TIMER --- */
+        /* --- 3. LAG-FREE COUNTDOWN TIMER (FIXED BUG) --- */
         const countDownDate = new Date().getTime() + (14 * 24 * 60 * 60 * 1000); 
-        const x = setInterval(function() {
+        
+        // Cache DOM elements
+        const dEl = document.getElementById("days");
+        const hEl = document.getElementById("hours");
+        const mEl = document.getElementById("minutes");
+        const sEl = document.getElementById("seconds");
+        const timerContainer = document.querySelector(".timer-container");
+
+        function updateTimer() {
             const now = new Date().getTime();
             const distance = countDownDate - now;
+
+            if (distance < 0) {
+                if(timerContainer) timerContainer.innerHTML = "<h2 style='color:red; font-family:Orbitron'>PROTOCOL ENGAGED</h2>";
+                return;
+            }
 
             const days = Math.floor(distance / (1000 * 60 * 60 * 24));
             const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
             const seconds = Math.floor((distance % (1000 * 60)) / 1000);
 
-            const dEl = document.getElementById("days");
-            const hEl = document.getElementById("hours");
-            const mEl = document.getElementById("minutes");
-            const sEl = document.getElementById("seconds");
-
             if(dEl) dEl.innerText = days < 10 ? "0" + days : days;
             if(hEl) hEl.innerText = hours < 10 ? "0" + hours : hours;
             if(mEl) mEl.innerText = minutes < 10 ? "0" + minutes : minutes;
             if(sEl) sEl.innerText = seconds < 10 ? "0" + seconds : seconds;
+        }
 
-            if (distance < 0) {
-                clearInterval(x);
-                const timerContainer = document.querySelector(".timer-container");
-                if(timerContainer) timerContainer.innerHTML = "<h2 style='color:red; font-family:Orbitron'>PROTOCOL ENGAGED</h2>";
-            }
-        }, 1000);
+        // Run immediately (Fixes start lag)
+        updateTimer();
 
-        draw();
+        // The Interval
+        setInterval(updateTimer, 1000);
 
-        // Timer and Title Swap logic...
+        // FIX: FORCE UPDATE ON TAB VISIBILITY (Fixes "58...pause...52" jump)
         let originalTitle = document.title; 
         window.addEventListener("visibilitychange", function() {
-            document.title = document.hidden ? "Please come back! 🔴" : originalTitle;
+            if (document.hidden) {
+                document.title = "Please come back! 🔴";
+            } else {
+                document.title = originalTitle;
+                // Force immediate update when user comes back to the tab
+                updateTimer(); 
+            }
         });
     </script>
 </body>
