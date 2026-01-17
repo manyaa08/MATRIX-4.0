@@ -27,30 +27,55 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // If it's internal navigation (already seen and NOT a reload)
     if (hasVisitedThisSession && !isReload) {
-        // Force hide preloader and show site instantly
         if (plMaster) plMaster.style.display = 'none';
         if (mainSite) {
             mainSite.style.display = 'block';
             mainSite.style.opacity = '1';
         }
-        return; // Stop the script here
+        return; 
     }
 
-    // IF WE ARE HERE: Either first visit OR manual reload. 
-    // Show the preloader (it might be hidden by default in CSS now)
-    if (plMaster) plMaster.style.display = 'block';
+    // --- NEW: ASSET ORCHESTRATION ---
+    // Pre-loading heavy media and pre-fetching other pages in the background
+    const assets = [
+        'images/matrix_lead_logo.png',
+        'images/Favicon.png',
+        'events.html',
+        'sponsors.html',
+        'contact_us.html'
+    ];
 
+    function preloadAssets() {
+        assets.forEach(url => {
+            if (url.endsWith('.html')) {
+                // Prefetch future pages to make navigation instant
+                const link = document.createElement('link');
+                link.rel = 'prefetch';
+                link.href = url;
+                document.head.appendChild(link);
+            } else {
+                // Prime images in the cache
+                const img = new Image();
+                img.src = url;
+            }
+        });
+    }
+    preloadAssets();
+
+    // Updated log sequence to reflect background activity
     const logSequence = [
         "> INITIALIZING DECRYPTOR...",
         "> BYPASSING SECURE_LAYER_01",
-        "> ACCESSING RED_NOTICE METADATA",
-        "> EXTRACTING ASSET_ID: 00982",
+        "> CACHING STATIC_RESOURCES...",
+        "> PRE-FETCHING NAV_COORDINATES",
         "> ENCRYPTION KEY FOUND: 0x8F2",
         "> WIPING SYSTEM TRACES...",
         "> BREACH SUCCESSFUL."
     ];
 
     // --- PHASE ONE: PRELOADER (2.37s) ---
+    if (plMaster) plMaster.style.display = 'block';
+
     let logIdx = 0;
     const logInterval = setInterval(() => {
         if (logIdx < logSequence.length) {
