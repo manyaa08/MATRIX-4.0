@@ -167,6 +167,27 @@
                 document.title = originalTitle;
             }
         });
+        
     </script>
-</body>
+    <script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const envelopes = document.querySelectorAll('.envelope-wrapper');
+
+        document.addEventListener('click', (e) => {
+            // Find if the click was inside an envelope wrapper
+            const clickedEnvelope = e.target.closest('.envelope-wrapper');
+
+            envelopes.forEach(env => {
+                if (env === clickedEnvelope) {
+                    // If we clicked this specific envelope, toggle it
+                    env.classList.toggle('is-open');
+                } else {
+                    // If we clicked the background or a different envelope, close this one
+                    env.classList.remove('is-open');
+                }
+            });
+        });
+    });
+    </script>
+    </body>
 </html>
