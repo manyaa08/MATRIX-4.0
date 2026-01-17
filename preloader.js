@@ -6,7 +6,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const consolePre = document.getElementById('pl_console_output');
     const keyPre = document.getElementById('pl_key_gen');
     
-    // Phase 2, 3, 4 Elements
     const plInterface = document.getElementById('pl_interface');
     const staticBg = document.getElementById('pl_bg_static');
     const codeLog = document.getElementById('pl_code_log');
@@ -17,7 +16,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const shackle = document.getElementById('pl_shackle');
     const blackout = document.getElementById('pl_blackout');
     
-    // Main Site Content
     const mainSite = document.getElementById('main_site_content');
 
     // --- LOGIC TO DETECT RELOAD VS NAVIGATION ---
@@ -25,7 +23,6 @@ document.addEventListener("DOMContentLoaded", () => {
     const isReload = navEntries.length > 0 && navEntries[0].type === 'reload';
     const hasVisitedThisSession = sessionStorage.getItem('pl_seen');
 
-    // If it's internal navigation (already seen and NOT a reload)
     if (hasVisitedThisSession && !isReload) {
         if (plMaster) plMaster.style.display = 'none';
         if (mainSite) {
@@ -35,43 +32,43 @@ document.addEventListener("DOMContentLoaded", () => {
         return; 
     }
 
-    // --- NEW: ASSET ORCHESTRATION ---
-    // Pre-loading heavy media and pre-fetching other pages in the background
-    const assets = [
-        'images/matrix_lead_logo.png',
-        'images/background-image.jpeg',
-        'images/events_page_i1.jpeg',
-        'images/Favicon.png',
-        'images/Sponsor_BG.png',
-        'images/Vault_Handle_Animation_Generation.mp4',        
-        'images/Favicon.png',
-        'events.html',
-        'sponsors.html',
-        'contact_us.html'
-    ];
+    // --- NEW: ADVANCED BACKGROUND LOADING ---
+    const pagesToPrefetch = ['events.html', 'sponsors.html', 'contact_us.html'];
+    const imagesToCache = ['images/matrix_lead_logo.png', 'images/Favicon.png'];
+    // Update this path to your actual vault video file
+    const vaultVideoPath = 'videos/vault_background.mp4'; 
 
-    function preloadAssets() {
-        assets.forEach(url => {
-            if (url.endsWith('.html')) {
-                // Prefetch future pages to make navigation instant
-                const link = document.createElement('link');
-                link.rel = 'prefetch';
-                link.href = url;
-                document.head.appendChild(link);
-            } else {
-                // Prime images in the cache
-                const img = new Image();
-                img.src = url;
-            }
+    function initiateBackgroundLoad() {
+        // 1. Prefetch HTML pages
+        pagesToPrefetch.forEach(url => {
+            const link = document.createElement('link');
+            link.rel = 'prefetch';
+            link.href = url;
+            document.head.appendChild(link);
         });
-    }
-    preloadAssets();
 
-    // Updated log sequence to reflect background activity
+        // 2. Cache Images
+        imagesToCache.forEach(src => {
+            const img = new Image();
+            img.src = src;
+        });
+
+        // 3. Prime the Vault Video
+        // Creating a hidden video element forces the browser to buffer the data
+        const videoLoader = document.createElement('video');
+        videoLoader.src = vaultVideoPath;
+        videoLoader.preload = 'auto';
+        videoLoader.muted = true;
+        videoLoader.style.display = 'none';
+        document.body.appendChild(videoLoader);
+    }
+    
+    initiateBackgroundLoad();
+
     const logSequence = [
         "> INITIALIZING DECRYPTOR...",
         "> BYPASSING SECURE_LAYER_01",
-        "> CACHING STATIC_RESOURCES...",
+        "> BUFFERING VAULT_STREAM...",
         "> PRE-FETCHING NAV_COORDINATES",
         "> ENCRYPTION KEY FOUND: 0x8F2",
         "> WIPING SYSTEM TRACES...",
@@ -157,9 +154,7 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     function completeSequence() {
-        // Set the flag so internal nav knows we've seen it
         sessionStorage.setItem('pl_seen', 'true');
-        
         plMaster.style.display = 'none';
         mainSite.style.display = 'block';
         setTimeout(() => {
