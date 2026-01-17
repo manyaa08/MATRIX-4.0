@@ -1,15 +1,14 @@
 /* --- 1. CORE RESET & BACKGROUND --- */
 * { margin: 0; padding: 0; box-sizing: border-box; }
 /* --- SCROLLBAR REMOVAL (Fixes Layout Shift) --- */
-        /* This hides the scrollbar visually but keeps scrolling enabled */
-        html {
-            scrollbar-width: none; /* For Firefox */
-            -ms-overflow-style: none; /* For Internet Explorer and Edge */
-        }
-        
-        body::-webkit-scrollbar {
-            display: none; /* For Chrome, Safari, and Opera */
-        }
+html {
+    scrollbar-width: none; /* For Firefox */
+    -ms-overflow-style: none; /* For Internet Explorer and Edge */
+}
+
+body::-webkit-scrollbar {
+    display: none; /* For Chrome, Safari, and Opera */
+}
 
 html, body {
     width: 100%; max-width: 100%;
@@ -237,8 +236,11 @@ nav {
     nav { padding: 0 20px; }
     .page-header { margin-top: 110px; }
     .hamburger { display: flex; }
+
+    /* Mobile Menu Styling - SYNCED WITH HOMEPAGE */
     .nav-links {
         position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+        /* Using the Sponsor Red Tint to match page theme, but sizing is now small */
         background: linear-gradient(to left, #000000 0%, #1a0000 55%, rgba(0,0,0,0.1) 100%);
         backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
         flex-direction: column; align-items: flex-end; justify-content: center;
@@ -248,12 +250,22 @@ nav {
         z-index: 2000; pointer-events: none;
     }
     .nav-links.active { transform: translateX(0); opacity: 1; pointer-events: all; }
-    .nav-links a { font-size: 1.8rem; margin: 20px 0; text-align: right; display: block; }
+    
+    /* --- UPDATED LINKS SIZE (MATCHING HOMEPAGE) --- */
+    .nav-links a { 
+        font-size: 1.1rem; /* CHANGED FROM 1.8rem */
+        margin: 10px 0;    /* CHANGED FROM 20px */
+        width: auto; 
+        text-align: right; 
+        display: block; 
+        font-weight: 500;
+    }
+    .nav-links a::after { left: auto; right: 0; }
 
-    /* Hamburger Animation States */
-    .hamburger.toggle span:nth-child(1) { transform: rotate(45deg) translate(5px, 6px); }
+    /* Updated X Animation (Matched to Homepage) */
+    .hamburger.toggle span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
     .hamburger.toggle span:nth-child(2) { opacity: 0; }
-    .hamburger.toggle span:nth-child(3) { transform: rotate(-45deg) translate(5px, -6px); }
+    .hamburger.toggle span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
 
     .nav-links a.nav-clicked {
         color: #ff3333;
