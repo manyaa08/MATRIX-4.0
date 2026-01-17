@@ -5,89 +5,155 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Matrix 4.0</title>
     <link rel="icon" type="image/png" href="images/Favicon.png">
-    <link rel="apple-touch-icon" href="images/Favicon.png">
-
+    
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
-    <link rel = "stylesheet" href = "style.css">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Orbitron:wght@500;700;900&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+    
+    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" href="preloader.css">
 </head>
 
 <body>
 
-    <div id="bg-container">
-        <div id="art-collage">
-            <div class="collage-item item-1"></div>
-            <div class="collage-item item-2"></div>
-            <div class="collage-item item-3"></div>
-            <div class="collage-item item-4"></div>
-            <div class="collage-item item-5"></div>
-            <div class="collage-item item-6"></div>
-        </div>
-        <div class="bg-tint"></div>
-        <canvas id="matrixCanvas"></canvas>
-    </div>
-
-    <nav>
-        <div class="logo">
-            <img src="images/matrix_lead_logo.png" alt="LEAD Logo">
-        </div>
-        <div class="hamburger" id="hamburger-menu">
-            <span></span><span></span><span></span>
-        </div>
-        <div class="nav-links" id="nav-menu">
-            <a href="index.html" class="active">Home</a>
-            <a href="events.html">Events</a>
-            <a href="sponsors.html">Sponsors</a>
-            <a href="contact_us.html">Contact Us</a>
-        </div>
-    </nav>
-
-    <div class="hero-section">
-        <div class="lead-fullform">
-            <span>LEARN</span>
-            <span>EMERGE</span>
-            <span>ASPIRE</span>
-            <span>DISCOVER</span>
-        </div>
-        <h1 class="hero-title">MATRIX 4.0</h1>
+    <div id="pl_master_wrapper">
         
-        <div class="typewriter-container">
-            <h2 class="hero-subtitle">The Red Notice Protocol</h2>
-        </div>
-
-        <div class="timer-container">
-            <div class="time-box">
-                <div class="corner-bracket tl"></div><div class="corner-bracket tr"></div>
-                <div class="corner-bracket bl"></div><div class="corner-bracket br"></div>
-                <span class="time-value" id="days">00</span>
-                <span class="time-label">Days</span>
-            </div>
-            <div class="time-box">
-                <div class="corner-bracket tl"></div><div class="corner-bracket tr"></div>
-                <div class="corner-bracket bl"></div><div class="corner-bracket br"></div>
-                <span class="time-value" id="hours">00</span>
-                <span class="time-label">Hours</span>
-            </div>
-            <div class="time-box">
-                <div class="corner-bracket tl"></div><div class="corner-bracket tr"></div>
-                <div class="corner-bracket bl"></div><div class="corner-bracket br"></div>
-                <span class="time-value" id="minutes">00</span>
-                <span class="time-label">Minutes</span>
-            </div>
-            <div class="time-box">
-                <div class="corner-bracket tl"></div><div class="corner-bracket tr"></div>
-                <div class="corner-bracket bl"></div><div class="corner-bracket br"></div>
-                <span class="time-value" id="seconds">00</span>
-                <span class="time-label">Seconds</span>
+        <div id="pl_glitch_container">
+            <div class="pl_bg_image"></div>
+            <div class="pl_scanlines"></div>
+            <div class="pl_geometry"></div>
+            
+            <div class="pl_loader_content">
+                <div class="pl_badge">SYSTEM_CRITICAL: BREACH_DETECTED</div>
+                <div class="pl_glitch_text">
+                    MATRIX_4.0
+                    <span aria-hidden="true">MATRIX_4.0</span>
+                    <span aria-hidden="true">MATRIX_4.0</span>
+                </div>
+                
+                <div class="pl_console" id="pl_console_output"></div>
+                
+                <div class="pl_progress_box">
+                    <div class="pl_bar" id="pl_progress_bar"></div>
+                </div>
+                <div class="pl_meta_text">
+                    DECRYPT_CORE: <span id="pl_key_gen">0x000000</span> | MASK: 255.255.255.0
+                </div>
             </div>
         </div>
 
-        <button class="cta-btn">Initiate Sequence</button>
+        <div id="pl_bg_static"></div>
+
+        <div id="pl_interface" style="display:none;">
+            <div class="pl_terminal pl_term_1">
+                <div class="pl_thead"><span>OVERRIDE_LOG</span><span>V.15</span></div>
+                <div class="pl_tbody" id="pl_code_log"></div>
+            </div>
+
+            <div class="pl_terminal pl_term_2 pl_glitch_active">
+                <div class="pl_thead"><span>DATA_STREAM</span><span>[LOAD]</span></div>
+                <div class="pl_tbody">
+                    <div id="pl_live_hex"></div>
+                </div>
+            </div>
+
+            <div class="pl_terminal pl_term_3">
+                <div class="pl_thead"><span>AUTH_BYPASS</span><span>ROOT</span></div>
+                <div class="pl_tbody">
+                    <span>ESTABLISHING_LINK...</span>
+                    <div class="pl_fw_box">
+                        <div class="pl_fw_progress" id="pl_fw_1"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div id="pl_access_container">
+            <div class="pl_card" id="pl_card">
+                <div class="pl_lock_box">
+                    <div class="pl_shackle" id="pl_shackle"></div>
+                    <div class="pl_lock_body"></div>
+                </div>
+                <h1 class="pl_access_text">ACCESS GRANTED</h1>
+                <div class="pl_access_sub">ENCRYPTION_LAYER_NEUTRALIZED</div>
+            </div>
+        </div>
+
+        <div id="pl_blackout" class="pl_blackout"></div>
     </div>
 
+
+    <div id="main_site_content" style="opacity: 0; transition: opacity 2s ease;">
+        
+        <div id="bg-container">
+            <div id="art-collage">
+                <div class="collage-item item-1"></div>
+                <div class="collage-item item-2"></div>
+                <div class="collage-item item-3"></div>
+                <div class="collage-item item-4"></div>
+                <div class="collage-item item-5"></div>
+                <div class="collage-item item-6"></div>
+            </div>
+            <div class="bg-tint"></div>
+            <canvas id="matrixCanvas"></canvas>
+        </div>
+
+        <nav>
+            <div class="logo">
+                <img src="images/matrix_lead_logo.png" alt="LEAD Logo">
+            </div>
+            <div class="hamburger" id="hamburger-menu">
+                <span></span><span></span><span></span>
+            </div>
+            <div class="nav-links" id="nav-menu">
+                <a href="index.html" class="active">Home</a>
+                <a href="events.html">Events</a>
+                <a href="sponsors.html">Sponsors</a>
+                <a href="contact_us.html">Contact Us</a>
+            </div>
+        </nav>
+
+        <div class="hero-section">
+            <div class="lead-fullform">
+                <span>LEARN</span>
+                <span>EMERGE</span>
+                <span>ASPIRE</span>
+                <span>DISCOVER</span>
+            </div>
+            <h1 class="hero-title">MATRIX 4.0</h1>
+            
+            <div class="typewriter-container">
+                <h2 class="hero-subtitle">The Red Notice Protocol</h2>
+            </div>
+
+            <div class="timer-container">
+                <div class="time-box">
+                    <div class="corner-bracket tl"></div><div class="corner-bracket tr"></div>
+                    <div class="corner-bracket bl"></div><div class="corner-bracket br"></div>
+                    <span class="time-value" id="days">00</span><span class="time-label">Days</span>
+                </div>
+                <div class="time-box">
+                    <div class="corner-bracket tl"></div><div class="corner-bracket tr"></div>
+                    <div class="corner-bracket bl"></div><div class="corner-bracket br"></div>
+                    <span class="time-value" id="hours">00</span><span class="time-label">Hours</span>
+                </div>
+                <div class="time-box">
+                    <div class="corner-bracket tl"></div><div class="corner-bracket tr"></div>
+                    <div class="corner-bracket bl"></div><div class="corner-bracket br"></div>
+                    <span class="time-value" id="minutes">00</span><span class="time-label">Minutes</span>
+                </div>
+                <div class="time-box">
+                    <div class="corner-bracket tl"></div><div class="corner-bracket tr"></div>
+                    <div class="corner-bracket bl"></div><div class="corner-bracket br"></div>
+                    <span class="time-value" id="seconds">00</span><span class="time-label">Seconds</span>
+                </div>
+            </div>
+            <button class="cta-btn">Initiate Sequence</button>
+        </div>
+    </div> <script src="preloader.js"></script> 
+    
     <script>
-        /* --- 1. RESPONSIVE HAMBURGER & INTERACTION (MATCHED TO CONTACT PAGE) --- */
+        /* --- RESPONSIVE HAMBURGER & INTERACTION --- */
         const hamburger = document.getElementById('hamburger-menu');
         const navMenu = document.getElementById('nav-menu');
 
@@ -96,10 +162,8 @@
                 navMenu.classList.toggle('active');
                 hamburger.classList.toggle('toggle');
             });
-
             document.querySelectorAll('.nav-links a').forEach(link => {
                 link.addEventListener('click', function(e) {
-                    // Match Contact Page Mobile Logic
                     if (window.innerWidth <= 968) {
                         e.preventDefault();
                         const href = this.getAttribute('href');
@@ -115,16 +179,13 @@
             });
         }
 
-        /* --- 2. OPTIMIZED MATRIX RAIN (FIXED: KEEPS BACKGROUND VISIBLE) --- */
+        /* --- MATRIX RAIN --- */
         const canvas = document.getElementById('matrixCanvas');
-        // FIX: Removed { alpha: false } to allow background images to show through!
         const ctx = canvas.getContext('2d'); 
         let width, height, columns, drops = [];
         const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ$#@&%';
         const fontSize = 14;
         let animationId;
-        
-        // Performance: Cap FPS to 30 to prevent mobile battery drain/lag
         let lastTime = 0;
         const fpsInterval = 1000 / 30; 
 
@@ -145,33 +206,19 @@
 
         function draw(timeStamp) {
             animationId = requestAnimationFrame(draw);
-
-            // Throttle FPS
             const elapsed = timeStamp - lastTime;
             if (elapsed < fpsInterval) return;
             lastTime = timeStamp - (elapsed % fpsInterval);
-
-            // Clear to transparent so background images show
             ctx.clearRect(0, 0, width, height);
-            
             ctx.font = fontSize + 'px monospace';
             ctx.textAlign = 'center';
-            
             for (let i = 0; i < drops.length; i++) {
                 const drop = drops[i];
-                
-                if (drop.y < -50 || drop.y > height + 50) {
-                      updateDropPosition(drop);
-                      continue;
-                }
-
+                if (drop.y < -50 || drop.y > height + 50) { updateDropPosition(drop); continue; }
                 const hue = Math.random() > 0.8 ? 0 : (Math.random() > 0.5 ? 180 : 0);
-                // Restored varying opacity for depth
                 ctx.fillStyle = `hsla(${hue}, 100%, ${Math.floor(Math.random() * 40 + 60)}%, ${Math.random() * 0.4 + 0.2})`;
-                
                 const text = chars[Math.floor(Math.random() * chars.length)];
                 const x = i * fontSize + (drop.y * drop.drift);
-                
                 ctx.fillText(text, x, drop.y);
                 updateDropPosition(drop);
             }
@@ -189,10 +236,7 @@
 
         document.addEventListener('visibilitychange', () => {
             if (document.hidden) cancelAnimationFrame(animationId);
-            else {
-                lastTime = performance.now(); 
-                animationId = requestAnimationFrame(draw);
-            }
+            else { lastTime = performance.now(); animationId = requestAnimationFrame(draw); }
         });
 
         window.addEventListener('resize', () => {
@@ -203,10 +247,8 @@
         initDrops();
         requestAnimationFrame(draw);
 
-        /* --- 3. LAG-FREE COUNTDOWN TIMER (FIXED BUG) --- */
+        /* --- TIMER --- */
         const countDownDate = new Date().getTime() + (14 * 24 * 60 * 60 * 1000); 
-        
-        // Cache DOM elements
         const dEl = document.getElementById("days");
         const hEl = document.getElementById("hours");
         const mEl = document.getElementById("minutes");
@@ -216,12 +258,10 @@
         function updateTimer() {
             const now = new Date().getTime();
             const distance = countDownDate - now;
-
             if (distance < 0) {
                 if(timerContainer) timerContainer.innerHTML = "<h2 style='color:red; font-family:Orbitron'>PROTOCOL ENGAGED</h2>";
                 return;
             }
-
             const days = Math.floor(distance / (1000 * 60 * 60 * 24));
             const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
             const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
@@ -232,23 +272,13 @@
             if(mEl) mEl.innerText = minutes < 10 ? "0" + minutes : minutes;
             if(sEl) sEl.innerText = seconds < 10 ? "0" + seconds : seconds;
         }
-
-        // Run immediately (Fixes start lag)
         updateTimer();
-
-        // The Interval
         setInterval(updateTimer, 1000);
 
-        // FIX: FORCE UPDATE ON TAB VISIBILITY (Fixes "58...pause...52" jump)
         let originalTitle = document.title; 
         window.addEventListener("visibilitychange", function() {
-            if (document.hidden) {
-                document.title = "Please come back! 🔴";
-            } else {
-                document.title = originalTitle;
-                // Force immediate update when user comes back to the tab
-                updateTimer(); 
-            }
+            if (document.hidden) { document.title = "Please come back! 🔴"; } 
+            else { document.title = originalTitle; updateTimer(); }
         });
     </script>
 </body>
