@@ -4,10 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Us - LEAD Art Heist</title>
-    <link rel="icon" type="image/png" href="images/Favicon.png">
-    <link rel="apple-touch-icon" href="images/Favicon.png">
-
-    <link rel = "stylesheet" href = "contact_us_style.css">
+    <link rel="stylesheet" href="contact_us_style.css">
 </head>
 <body>
 
@@ -46,13 +43,38 @@
                     <h1>Initiate Contact</h1>
                     <p>Have inquiries about the event? Secure channel open.</p>
                 </div>
-                <form class="form-grid">
-                    <div class="form-group"><input type="text" id="fname" class="form-input" placeholder=" " required><label for="fname" class="form-label">First Name</label></div>
-                    <div class="form-group"><input type="text" id="lname" class="form-input" placeholder=" " required><label for="lname" class="form-label">Last Name</label></div>
-                    <div class="form-group"><input type="email" id="email" class="form-input" placeholder=" " required><label for="email" class="form-label">Email Address</label></div>
-                    <div class="form-group"><input type="tel" id="phone" class="form-input" placeholder=" " required><label for="phone" class="form-label">Phone Number</label></div>
-                    <div class="form-group full-width"><textarea id="message" rows="5" class="form-input" placeholder=" " required></textarea><label for="message" class="form-label">Message / Intel</label></div>
-                    <button type="submit" class="submit-btn">Transmit Data</button>
+                <form class="form-grid" id="contactForm">
+                    <div class="form-group">
+                        <input type="text" id="fname" name="fname" class="form-input" placeholder=" " required 
+                            pattern="[A-Za-z]+" title="Letters only, no spaces allowed.">
+                        <label for="fname" class="form-label">First Name</label>
+                    </div>
+                    
+                    <div class="form-group">
+                        <input type="text" id="lname" name="lname" class="form-input" placeholder=" " required 
+                            pattern="[A-Za-z]+" title="Letters only, no spaces allowed.">
+                        <label for="lname" class="form-label">Last Name</label>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="email" id="email" name="email" class="form-input" placeholder=" " required 
+                            pattern="^[a-zA-Z0-9._%+-]+@thapar\.edu$" title="Must be a @thapar.edu email with no spaces.">
+                        <label for="email" class="form-label">Thapar Email</label>
+                    </div>
+
+                    <div class="form-group">
+                        <input type="tel" id="phone" name="phone" class="form-input" placeholder=" " required 
+                            pattern="[0-9]{10}" maxlength="10" inputmode="numeric" title="Exactly 10 digits required. No spaces or letters.">
+                        <label for="phone" class="form-label">Phone Number</label>
+                    </div>
+
+                    <div class="form-group full-width">
+                        <textarea id="message" name="message" rows="5" class="form-input" placeholder=" " required></textarea>
+                        <label for="message" class="form-label">Message / Intel</label>
+                    </div>
+
+                    <button type="submit" id="submitBtn" class="submit-btn">Transmit Data</button>
+                    <p id="formStatus" style="grid-column: span 2; text-align: center; margin-top: 15px; font-family: 'Orbitron', sans-serif; font-size: 0.9rem; min-height: 1.5em;"></p>
                 </form>
             </div>
 
@@ -86,18 +108,13 @@
                 hamburger.classList.toggle('toggle');
             });
 
-            // Intercept clicks on links for animation
             document.querySelectorAll('.nav-links a').forEach(link => {
                 link.addEventListener('click', function(e) {
-                    // Only intercept in mobile view
                     if (window.innerWidth <= 968) {
                         e.preventDefault(); 
                         const href = this.getAttribute('href');
-
-                        // 1. Add class to trigger full underline CSS transition
                         this.classList.add('nav-clicked');
 
-                        // 2. Wait 800ms for animation, then navigate
                         setTimeout(() => {
                             window.location.href = href;
                             navMenu.classList.remove('active');
@@ -157,36 +174,108 @@
             for (let i = 0; i < drops.length; i++) {
                 const drop = drops[i];
                 const hue = Math.random() > 0.8 ? 0 : (Math.random() > 0.5 ? 180 : 0);
-                const saturation = 100;
-                const lightness = Math.random() * 40 + 60;
                 const alpha = Math.random() * 0.4 + 0.2;
 
-                ctx.fillStyle = `hsla(${hue}, ${saturation}%, ${lightness}%, ${alpha})`;
+                ctx.fillStyle = `hsla(${hue}, 100%, 70%, ${alpha})`;
                 const text = chars[Math.floor(Math.random() * chars.length)];
                 const x = i * fontSize + (drop.y * drop.drift); 
                 ctx.fillText(text, x, drop.y);
 
                 if (drop.direction === 1) {
                     drop.y += fontSize * drop.speed;
-                    if (drop.y > height + fontSize && Math.random() > 0.98) { drop.y = -fontSize; drop.drift = (Math.random() - 0.5) * 0.2; }
+                    if (drop.y > height + fontSize && Math.random() > 0.98) { drop.y = -fontSize; }
                 } else {
                     drop.y -= fontSize * drop.speed;
-                    if (drop.y < -fontSize && Math.random() > 0.98) { drop.y = height + fontSize; drop.drift = (Math.random() - 0.5) * 0.2; }
+                    if (drop.y < -fontSize && Math.random() > 0.98) { drop.y = height + fontSize; }
                 }
             }
         }
-        
         requestAnimationFrame(draw);
 
+        /* --- 4. REAL-TIME INPUT RESTRICTIONS (The Firewall) --- */
+        const fnameInput = document.getElementById('fname');
+        const lnameInput = document.getElementById('lname');
+        const emailInput = document.getElementById('email');
+        const phoneInput = document.getElementById('phone');
 
-        draw();
-
-        // Timer and Title Swap logic...
-        let originalTitle = document.title; 
-        window.addEventListener("visibilitychange", function() {
-            document.title = document.hidden ? "Please come back! 🔴" : originalTitle;
+        // Prevent spaces and non-letters in Names
+        [fnameInput, lnameInput].forEach(el => {
+            el.addEventListener('input', () => {
+                el.value = el.value.replace(/[^A-Za-z]/g, '');
+            });
         });
 
+        // Prevent spaces in Email using the 'keydown' method
+        emailInput.addEventListener('keydown', (e) => {
+            if (e.code === "Space") {
+                e.preventDefault(); // This stops the space from ever being typed
+            }
+        });
+
+        // Prevent letters/spaces in Phone (Digits only)
+        phoneInput.addEventListener('input', () => {
+            phoneInput.value = phoneInput.value.replace(/[^0-9]/g, '');
+        });
+        
+        /* --- 3. FORM SUBMISSION TO GOOGLE SHEETS --- */
+        const contactForm = document.getElementById('contactForm');
+        const submitBtn = document.getElementById('submitBtn');
+        const formStatus = document.getElementById('formStatus');
+        const allInputs = contactForm.querySelectorAll('.form-input');
+
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbyFiXG9SFIN5vtIYRUUTSAsMpoLMBOCX9B8foXkgoGUBEwOaemtJU3e-xoYtELXIaOyKw/exec";
+
+        contactForm.addEventListener('submit', function(e) {
+            e.preventDefault();
+
+            // --- HARD GATE: THAPAR DOMAIN CHECK ---
+            const emailValue = emailInput.value.trim().toLowerCase();
+            if (!emailValue.endsWith('@thapar.edu')) {
+                formStatus.style.color = "#ff3333";
+                formStatus.textContent = "> ERROR: AUTHORIZED @THAPAR.EDU ID REQUIRED.";
+                emailInput.focus();
+                return; // Kill submission
+            }
+
+            // 1. Prepare Data
+            const formData = new FormData(contactForm);
+            const body = new URLSearchParams(formData).toString();
+
+            // 2. Lock UI (Heist Theme)
+            submitBtn.disabled = true;
+            allInputs.forEach(input => input.disabled = true);
+            
+            submitBtn.innerText = "TRANSMITTING...";
+            formStatus.style.color = "#fff";
+            formStatus.textContent = "> Establishing secure uplink...";
+
+            // 3. Send to Google Sheets
+            fetch(WEB_APP_URL, {
+                method: "POST",
+                mode: "no-cors", 
+                headers: { "Content-Type": "application/x-www-form-urlencoded" },
+                body: body
+            })
+            .then(() => {
+                formStatus.style.color = "#00ff00";
+                formStatus.textContent = "> INTEL RECEIVED. TRANSMISSION SECURE.";
+                contactForm.reset();
+                
+                setTimeout(() => { 
+                    formStatus.textContent = ""; 
+                    submitBtn.innerText = "TRANSMIT DATA";
+                    submitBtn.disabled = false;
+                    allInputs.forEach(input => input.disabled = false);
+                }, 5000);
+            })
+            .catch(err => {
+                formStatus.style.color = "#ff3333";
+                formStatus.textContent = "> ERROR: UPLINK INTERRUPTED.";
+                submitBtn.disabled = false;
+                allInputs.forEach(input => input.disabled = false);
+                submitBtn.innerText = "RETRY TRANSMISSION";
+            });
+        });
     </script>
 </body>
 </html>

@@ -2,6 +2,7 @@
         @import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Orbitron:wght@500;700;900&display=swap');
 
         /* --- SCROLLBAR REMOVAL (Fixes Layout Shift) --- */
+        /* This hides the scrollbar visually but keeps scrolling enabled */
         html {
             scrollbar-width: none; /* For Firefox */
             -ms-overflow-style: none; /* For Internet Explorer and Edge */
@@ -304,24 +305,13 @@
                 z-index: 2000; pointer-events: none;
             }
             .nav-links.active { transform: translateX(0); opacity: 1; pointer-events: all; }
-            
-            /* --- UPDATED HAMBURGER LINKS (Matched to Homepage) --- */
-            .nav-links a { 
-                font-size: 1.1rem; /* Fixed: Changed from 1.8rem */
-                margin: 10px 0;    /* Fixed: Changed from 20px */
-                width: auto; 
-                text-align: right; 
-                display: block; 
-                font-weight: 500;  /* Fixed: Lighter font weight */
-            }
+            .nav-links a { font-size: 1.8rem; margin: 20px 0; width: auto; text-align: right; display: block; }
             .nav-links a::after { left: auto; right: 0; }
 
-            /* --- UPDATED X ANIMATION (Matched to Homepage) --- */
-            .hamburger.toggle span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+            .hamburger.toggle span:nth-child(1) { transform: rotate(45deg) translate(5px, 6px); }
             .hamburger.toggle span:nth-child(2) { opacity: 0; }
-            .hamburger.toggle span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+            .hamburger.toggle span:nth-child(3) { transform: rotate(-45deg) translate(5px, -6px); }
 
-            /* Contact Page Specific Mobile Adjustments */
             .main-content { padding: 180px 15px 40px 15px; }
             .content-layout-wrapper { flex-direction: column; gap: 40px; }
             

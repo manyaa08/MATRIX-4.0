@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MATRIX 4.0 | Registration</title>
+  <link rel="stylesheet" href="Registration_style.css">
+</head>
+<body>
+
+  <nav class="top-nav">
+    <img src="assets/images/matrix_lead_logo.png" alt="LEAD Matrix Logo">
+  </nav>
+
+  <div class="container">
+    <div class="card">
+      
+      <div id="loaderOverlay" class="loader-overlay">
+        <div class="spinner"></div>
+        <div class="loader-text">PROCESSING...</div>
+      </div>
+
+      <form id="regForm" class="scroll-area">
+        <div class="matrix-title">MATRIX 4.0</div>
+
+        <input type="hidden" name="team_size" id="teamSize">
+
+        <div class="dropdown">
+          <div class="dropdown-selected">
+            <span id="selectedText">Select team size</span>
+            <span class="arrow">▾</span>
+          </div>
+          <div class="dropdown-menu">
+            <div class="option" data-size="1">1 Member</div>
+            <div class="option" data-size="2">2 Members</div>
+            <div class="option" data-size="3">3 Members</div>
+            <div class="option" data-size="4">4 Members</div>
+          </div>
+        </div>
+
+        <div id="formArea"></div>
+
+        <div class="check-group">
+          <label class="check-item">
+            <input type="checkbox" name="reg_day1" id="reg_day1" checked>
+            <span class="check-box"></span>
+            <span class="check-text">Register for Day 1</span>
+          </label>
+
+          <label class="check-item">
+            <input type="checkbox" name="reg_day2" id="reg_day2" checked>
+            <span class="check-box"></span>
+            <span class="check-text">Register for Day 2</span>
+          </label>
+
+          <label class="check-item">
+            <input type="checkbox" name="reg_day3" id="reg_day3" checked>
+            <span class="check-box"></span>
+            <span class="check-text">Register for Day 3</span>
+          </label>
+        </div>
+
+        <div class="button-group">
+          <button class="button" type="submit">Register</button>
+          <button class="button" type="button" id="clearBtn">Clear</button>
+        </div>
+        
+        <p id="msg"></p>
+      </form>
+    </div>
+  </div>
+
+  <script src="Registration_script.js"></script>
+</body>
+</html>
