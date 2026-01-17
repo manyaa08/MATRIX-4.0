@@ -188,6 +188,32 @@
             });
         });
     });
+    document.addEventListener('DOMContentLoaded', () => {
+    const envelopes = document.querySelectorAll('.envelope-wrapper');
+
+    envelopes.forEach(env => {
+        env.addEventListener('click', (e) => {
+            // Prevent event from bubbling up to the document
+            e.stopPropagation();
+
+            // Check if this specific envelope is already open
+            const isOpen = env.classList.contains('is-open');
+
+            // Close all envelopes first
+            envelopes.forEach(el => el.classList.remove('is-open'));
+
+            // If it wasn't open, open it (1st tap); if it was open, it stays closed (2nd tap)
+            if (!isOpen) {
+                env.classList.add('is-open');
+            }
+        });
+    });
+
+    // Close envelopes if user taps anywhere else on the screen
+        document.addEventListener('click', () => {
+            envelopes.forEach(env => env.classList.remove('is-open'));
+        });
+    });
     </script>
     </body>
 </html>

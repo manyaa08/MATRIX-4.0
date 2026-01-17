@@ -87,5 +87,32 @@
   </div>
 
   <script src="Registration_script.js"></script>
+  <script>/* --- MOBILE TAP ANIMATION FOR SPONSORS --- */
+    const sponsorCards = document.querySelectorAll('.sponsor-card');
+
+    sponsorCards.forEach(card => {
+        card.addEventListener('click', function(e) {
+            // Only run this logic if we are in mobile mode (<= 968px)
+            if (window.innerWidth <= 968) {
+                
+                // Optional: Close other open cards first
+                sponsorCards.forEach(c => {
+                    if (c !== card) c.classList.remove('is-active');
+                });
+
+                // Toggle the active class on the clicked card
+                this.classList.toggle('is-active');
+                
+                // Prevent other click events if necessary
+                e.stopPropagation(); 
+            }
+        });
+    });
+
+    // Close the card if the user taps anywhere else on the screen
+    document.addEventListener('click', () => {
+        sponsorCards.forEach(c => c.classList.remove('is-active'));
+    });
+</script>
 </body>
 </html>

@@ -202,7 +202,10 @@ nav {
     font-size: 0.9rem; color: #000; font-weight: 900; font-family: 'Orbitron';
     border: 1px solid #500;
 }
-/* --- 6. INTERACTION LOGIC (REWRITTEN FOR TOGGLE) --- */
+
+/* --- 6. INTERACTION LOGIC --- */
+
+/* MOBILE/TABLET: Triggered by the 'is-open' class (JS Taps) */
 .envelope-wrapper.is-open .env-flap {
     animation: none;
     border-color: #ff3333; 
@@ -219,15 +222,43 @@ nav {
     border-color: #ff3333;
 }
 
+.envelope-wrapper.is-open .env-card {
+    opacity: 1; 
+    transform: translateY(-110px); 
+}
+
+/* LAPTOP/DESKTOP: Triggered by Hover */
+@media (hover: hover) {
+    .envelope-wrapper:hover .env-flap {
+        animation: none;
+        border-color: #ff3333; 
+        transform: rotateX(180deg); 
+        background-color: #4d0000; 
+        z-index: 0; 
+        transition-delay: 0s;
+    }
+    .envelope-wrapper:hover .env-front {
+        animation: none;
+        background-color: #2a0000;
+        box-shadow: inset 0 0 30px rgba(255, 0, 0, 0.6), 0 0 15px rgba(255, 0, 0, 0.4); 
+        border-bottom-color: #ff3333;
+    }
+    .envelope-wrapper:hover .env-card {
+        opacity: 1; 
+        transform: translateY(-110px); 
+    }
+    .envelope-wrapper:hover .wax-seal {
+        box-shadow: 0 0 25px #ff0000; 
+        background: #ffffff; 
+        color: #000;
+    }
+}
+
+/* Shared Active State for Wax Seal (Click/Tap) */
 .envelope-wrapper.is-open .wax-seal {
     box-shadow: 0 0 25px #ff0000; 
     background: #ffffff; 
     color: #000;
-}
-
-.envelope-wrapper.is-open .env-card {
-    opacity: 1; 
-    transform: translateY(-110px); 
 }
 
 .envelope-wrapper.is-open .envelope {
