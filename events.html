@@ -170,7 +170,7 @@
 
             // 2. TOGGLE ON TAP (Universal)
             card.addEventListener('pointerdown', (e) => {
-                e.stopPropagation(); // Prevents the "document" click from firing immediately
+                e.stopPropagation(); 
                 
                 if (card.classList.contains('unlocked')) {
                     closeVault(card);
@@ -179,12 +179,10 @@
                 }
             });
 
-            // Prevent context menu (long-press)
             card.addEventListener('contextmenu', e => e.preventDefault());
         });
 
         // 3. CLOSE ON EXTERNAL TAP
-        // This closes any open vault if the user taps anywhere on the screen background
         document.addEventListener('pointerdown', (e) => {
             allCards.forEach(card => {
                 if (!card.contains(e.target)) {
@@ -194,10 +192,27 @@
         });
 
         // 4. PREVENT BUTTON CLICKS FROM CLOSING THE VAULT
-        // This ensures that when they click the actual "Access File" link, the vault doesn't toggle shut
         document.querySelectorAll('.view-btn').forEach(btn => {
             btn.addEventListener('pointerdown', (e) => {
                 e.stopPropagation(); 
+            });
+        });
+
+        /* --- FIX FOR BLACK VIDEO ON MOBILE --- */
+        // This ensures the first frame renders immediately on page load
+        window.addEventListener('load', () => {
+            document.querySelectorAll('.vault-video').forEach(video => {
+                video.load(); 
+                // A quick play/pause nudge helps force the browser to render the initial frame
+                const nudge = video.play();
+                if (nudge !== undefined) {
+                    nudge.then(() => {
+                        video.pause();
+                        video.currentTime = 0;
+                    }).catch(() => {
+                        // Catching autoplay prevention; video.load() is usually enough
+                    });
+                }
             });
         });
 
