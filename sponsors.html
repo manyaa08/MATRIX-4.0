@@ -1,0 +1,141 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Sponsors - MATRIX 4.0</title>
+    
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+    <link rel = "stylesheet" href = "sponsors.css">
+</head>
+<body>
+    <div id="bg-container">
+        <div class="bg-tint"></div>
+        <canvas id="matrixCanvas"></canvas>
+    </div>
+
+    <nav>
+        <div class="logo">
+            <img src="images/matrix_lead_logo.png" alt="LEAD Logo">
+        </div>
+        <div class="hamburger" id="hamburger-menu">
+            <span></span><span></span><span></span>
+        </div>
+        <div class="nav-links" id="nav-menu">
+            <a href="home.html">Home</a>
+            <a href="events.html">Events</a>
+            <a href="sponsors.html" class="active">Sponsors</a>
+            <a href="contact.html">Contact Us</a>
+        </div>
+    </nav>
+
+    <div class="page-header">
+        <h1>CLASSIFIED INTEL</h1>
+        <p>THE SYNDICATE PARTNERS</p>
+    </div>
+
+    <div class="grid-container">
+        <div class="envelope-wrapper">
+            <div class="envelope">
+                <div class="env-back"></div>
+                <div class="env-card">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/2/2f/Google_2015_logo.svg" alt="Google">
+                </div>
+                <div class="env-front">
+                    <div class="stamp">TITLE SPONSOR</div>
+                </div>
+                <div class="env-flap"><div class="wax-seal">M</div></div>
+            </div>
+        </div>
+
+        <div class="envelope-wrapper">
+            <div class="envelope">
+                <div class="env-back"></div>
+                <div class="env-card">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/4/44/Microsoft_logo.svg" alt="Microsoft">
+                </div>
+                <div class="env-front">
+                    <div class="stamp">PLATINUM</div>
+                </div>
+                <div class="env-flap"><div class="wax-seal">M</div></div>
+            </div>
+        </div>
+
+        <div class="envelope-wrapper">
+            <div class="envelope">
+                <div class="env-back"></div>
+                <div class="env-card">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/e/e8/Tesla_logo.png" alt="Tesla">
+                </div>
+                <div class="env-front">
+                    <div class="stamp">GOLD</div>
+                </div>
+                <div class="env-flap"><div class="wax-seal">M</div></div>
+            </div>
+        </div>
+        
+        <div class="envelope-wrapper">
+            <div class="envelope">
+                <div class="env-back"></div>
+                <div class="env-card">
+                    <img src="https://upload.wikimedia.org/wikipedia/commons/c/c2/GitHub_Invertocat_Logo.svg" alt="Github">
+                </div>
+                <div class="env-front">
+                    <div class="stamp">TECH PARTNER</div>
+                </div>
+                <div class="env-flap"><div class="wax-seal">M</div></div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        const hamburger = document.getElementById('hamburger-menu');
+        const navMenu = document.getElementById('nav-menu');
+        hamburger.addEventListener('click', () => {
+            hamburger.classList.toggle('toggle');
+            navMenu.classList.toggle('active');
+        });
+
+        document.querySelectorAll('.nav-links a').forEach(link => {
+            link.addEventListener('click', function(e) {
+                if (window.innerWidth <= 968) {
+                    e.preventDefault(); 
+                    const href = this.getAttribute('href');
+                    this.classList.add('nav-clicked');
+                    setTimeout(() => {
+                        window.location.href = href;
+                        navMenu.classList.remove('active');
+                        hamburger.classList.remove('toggle');
+                        this.classList.remove('nav-clicked');
+                    }, 800);
+                }
+            });
+        });
+
+        const canvas = document.getElementById('matrixCanvas');
+        const ctx = canvas.getContext('2d');
+        let width, height, columns, drops = [];
+        const chars = '0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZ$#@&%';
+        const fontSize = 14;
+        function initDrops() {
+            width = canvas.width = window.innerWidth; height = canvas.height = window.innerHeight;
+            columns = Math.ceil(width / fontSize); drops = [];
+            for (let i = 0; i < columns; i++) { drops.push({ y: Math.random() * height, speed: Math.random() * 0.15 + 0.05 }); }
+        }
+        function draw() {
+            ctx.clearRect(0, 0, width, height);
+            for (let i = 0; i < drops.length; i++) {
+                const drop = drops[i];
+                ctx.fillStyle = Math.random() > 0.9 ? '#ff3333' : '#0F0'; 
+                ctx.fillText(chars[Math.floor(Math.random() * chars.length)], i * fontSize, drop.y);
+                drop.y += fontSize * drop.speed;
+                if (drop.y > height && Math.random() > 0.98) drop.y = 0;
+            }
+            requestAnimationFrame(draw);
+        }
+        window.addEventListener('resize', initDrops); initDrops(); draw();
+    </script>
+</body>
+</html>
