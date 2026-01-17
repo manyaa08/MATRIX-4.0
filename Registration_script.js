@@ -203,3 +203,8 @@ clearBtn.onclick = () => {
     if (isSubmitting) return;
     location.reload();
 };
+        let originalTitle = document.title; 
+        window.addEventListener("visibilitychange", function() {
+            if (document.hidden) { document.title = "Please come back! 🔴"; } 
+            else { document.title = originalTitle; updateTimer(); }
+        });
