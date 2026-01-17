@@ -208,3 +208,26 @@ clearBtn.onclick = () => {
             if (document.hidden) { document.title = "Please come back! 🔴"; } 
             else { document.title = originalTitle; updateTimer(); }
         });
+
+
+        
+/* --- RESPONSIVE NAVBAR SCRIPT --- */
+const hamburger = document.getElementById('hamburger-menu');
+const navMenu = document.getElementById('nav-menu');
+
+if (hamburger && navMenu) {
+    hamburger.addEventListener('click', () => {
+        // Toggle the Mobile Menu
+        navMenu.classList.toggle('active');
+        // Toggle the Hamburger Animation
+        hamburger.classList.toggle('toggle');
+    });
+
+    // Close menu when a link is clicked
+    document.querySelectorAll('.nav-links a').forEach(link => {
+        link.addEventListener('click', () => {
+            navMenu.classList.remove('active');
+            hamburger.classList.remove('toggle');
+        });
+    });
+}
