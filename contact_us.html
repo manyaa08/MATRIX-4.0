@@ -4,6 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Contact Us - LEAD Art Heist</title>
+    <link rel="icon" type="image/png" href="images/Favicon.png">
+    <link rel="apple-touch-icon" href="images/Favicon.png">
     <link rel="stylesheet" href="contact_us_style.css">
 </head>
 <body>
@@ -275,6 +277,11 @@
                 allInputs.forEach(input => input.disabled = false);
                 submitBtn.innerText = "RETRY TRANSMISSION";
             });
+        });
+                /* --- TITLE SWAP LOGIC --- */
+        let originalTitle = document.title; 
+        window.addEventListener("visibilitychange", function() {
+            document.title = document.hidden ? "Please come back! 🔴" : originalTitle;
         });
     </script>
 </body>
