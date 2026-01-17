@@ -1,3 +1,15 @@
+        /* =========================================
+           1. SCROLLBAR REMOVAL (From Homepage)
+           ========================================= */
+        /* This hides the scrollbar visually but keeps scrolling enabled */
+        html {
+            scrollbar-width: none; /* For Firefox */
+            -ms-overflow-style: none; /* For Internet Explorer and Edge */
+        }
+        
+        body::-webkit-scrollbar {
+            display: none; /* For Chrome, Safari, and Opera */
+        }
 * {
   box-sizing: border-box;
   font-family: "Segoe UI", sans-serif;

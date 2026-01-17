@@ -249,8 +249,9 @@
         initDrops();
         requestAnimationFrame(draw);
 
-        /* --- TIMER --- */
-        const countDownDate = new Date().getTime() + (14 * 24 * 60 * 60 * 1000); 
+/* --- TIMER --- */
+        // Target: Jan 30, 2026, 5:00 PM IST (+05:30)
+        const countDownDate = new Date("Jan 30, 2026 17:00:00 +05:30").getTime(); 
         const dEl = document.getElementById("days");
         const hEl = document.getElementById("hours");
         const mEl = document.getElementById("minutes");
