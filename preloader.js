@@ -34,9 +34,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // --- NEW: ADVANCED BACKGROUND LOADING ---
     const pagesToPrefetch = ['events.html', 'sponsors.html', 'contact_us.html'];
-    const imagesToCache = ['images/matrix_lead_logo.png', 'images/Favicon.png'];
-    // Update this path to your actual vault video file
-    const vaultVideoPath = 'videos/vault_background.mp4'; 
+    const imagesToCache = ['images/matrix_lead_logo.png', 'images/Favicon.png', 'images/events_page_i1.jpeg'];
+    // Ensuring the video path matches the source in events.html
+    const vaultVideoPath = 'images/Vault_Handle_Animation_Generation.mp4'; 
 
     function initiateBackgroundLoad() {
         // 1. Prefetch HTML pages
@@ -54,7 +54,6 @@ document.addEventListener("DOMContentLoaded", () => {
         });
 
         // 3. Prime the Vault Video
-        // Creating a hidden video element forces the browser to buffer the data
         const videoLoader = document.createElement('video');
         videoLoader.src = vaultVideoPath;
         videoLoader.preload = 'auto';
