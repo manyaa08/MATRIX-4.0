@@ -39,6 +39,11 @@ document.addEventListener("DOMContentLoaded", () => {
     // Pre-loading heavy media and pre-fetching other pages in the background
     const assets = [
         'images/matrix_lead_logo.png',
+        'images/background-image.jpeg',
+        'images/events_page_i1.jpeg',
+        'images/Favicon.png',
+        'images/Sponsor_BG.png',
+        'images/Vault_Handle_Animation_Generation.mp4',        
         'images/Favicon.png',
         'events.html',
         'sponsors.html',
