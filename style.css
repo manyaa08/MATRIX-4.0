@@ -280,7 +280,7 @@
             
             /* Home Content Adjustments */
             .hero-section { 
-                padding-top: 80px; /* Reduced from 100px to match thinner nav */
+                padding-top: 72px; /* Reduced from 100px to match thinner nav */
                 min-height: 100vh;
                 display: flex;
                 flex-direction: column;
@@ -311,7 +311,12 @@
                 border-right: none; animation: none; width: auto;
             }
 
-            .timer-container { gap: 12px  ;margin: 1vh 0; }
+            .timer-container {
+                gap: 12px;
+                margin-top: -20px;
+                margin-bottom: 1vh;
+            }
+
             .time-box { min-width: 70px; padding: 10px; }
             .time-value { font-size: 1.5rem; }
             .time-label { font-size: 0.6rem; letter-spacing: 1px; }
