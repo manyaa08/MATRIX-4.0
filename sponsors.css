@@ -135,7 +135,7 @@ nav {
 }
 
 .env-card {
-    position: absolute; bottom: 0; left: 15px; width: 250px; height: 150px;
+    position: absolute; bottom: 3; left: 15px; width: 250px; height: 150px;
     background: #fff; border-radius: 4px;
     transform: translateY(20px); 
     opacity: 0; 

@@ -110,35 +110,43 @@ nav {
 
 /* --- MOBILE RESPONSIVE LOGIC --- */
 @media (max-width: 968px) {
-    nav { padding: 15px 25px; }
+    nav { 
+        padding: 0 20px; 
+        height: 72px; /* Reduced from 80px (80% of original) */
+    }
+
+            /* Adjust logo size to fit the smaller nav height */
+    .logo img {
+        height: 37px; /* Reduced from 45px */
+    }
 
     .hamburger { display: flex; }
 
+            /* Mobile Menu Styling - Contact Page Style */
     .nav-links {
-        position: fixed;
-        top: 0;
-        right: 0;
-        width: 100%;
-        height: 100vh;
-        background: rgba(0, 0, 0, 0.95);
-        backdrop-filter: blur(20px);
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        transform: translateX(100%); /* Hidden by default */
-        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+        position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+        background: linear-gradient(to left, #000000 0%, #000000 55%, rgba(0,0,0,0.1) 100%);
+        backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+        flex-direction: column; align-items: flex-end; justify-content: flex-start;
+        padding-top: 90px;
+        padding-right: 50px;
+        transform: translateX(100%); opacity: 0;
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
+        z-index: 2000; pointer-events: none;
+        will-change: transform, opacity;
     }
-
-    .nav-links.active {
-        transform: translateX(0); /* Slides in */
+    .nav-links.active { transform: translateX(0); opacity: 1; pointer-events: all; }
+            
+    .nav-links a { 
+        font-size: 1.1rem; 
+        margin: 12px 0;    
+        width: auto; 
+        text-align: right; 
+        display: block; 
+        font-weight: 500; 
     }
+    .nav-links a::after { left: auto; right: 0; }
 
-    .nav-links a {
-        font-size: 1.5rem;
-        margin: 15px 0;
-    }
-
-    /* Hamburger to 'X' Animation */
     .hamburger.toggle span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
     .hamburger.toggle span:nth-child(2) { opacity: 0; }
     .hamburger.toggle span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
@@ -290,7 +298,47 @@ nav {
 
 .section-title { font-size: 26px; font-weight: 700; color: white; margin: 30px 0 20px; }
 
+
+
 @media (max-width: 768px) {
+  nav { 
+    padding: 0 20px; 
+    height: 72px; /* Reduced from 80px (80% of original) */
+  }
+
+            /* Adjust logo size to fit the smaller nav height */
+  .logo img {
+    height: 37px; /* Reduced from 45px */
+  }
+  .hamburger { display: flex; }
+  .nav-links {
+    position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
+    background: linear-gradient(to left, #000000 0%, #000000 55%, rgba(0,0,0,0.1) 100%);
+    backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+    flex-direction: column; align-items: flex-end; justify-content: flex-start;
+    padding-top: 90px;
+    padding-right: 50px;
+    transform: translateX(100%); opacity: 0;
+    transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
+    z-index: 2000; pointer-events: none;
+    will-change: transform, opacity;
+  }
+  .nav-links.active { transform: translateX(0); opacity: 1; pointer-events: all; }
+            
+  .nav-links a { 
+    font-size: 1.1rem; 
+    margin: 12px 0;    
+    width: auto; 
+    text-align: right; 
+    display: block; 
+    font-weight: 500; 
+  }
+  .nav-links a::after { left: auto; right: 0; }
+
+  .hamburger.toggle span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+  .hamburger.toggle span:nth-child(2) { opacity: 0; }
+  .hamburger.toggle span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
+  
   body { justify-content: center; padding-left: 0; }
   .container { transform: scale(0.92); transform-origin: center; }
 }
