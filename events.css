@@ -116,7 +116,8 @@
             }
             .nav-links.active { transform: translateX(0); opacity: 1; pointer-events: all; }
             
-            .nav-links a { 
+            .nav-links a {
+                padding-right: 40px;
                 font-size: 1.1rem; 
                 margin: 12px 0;    
                 width: auto; 
