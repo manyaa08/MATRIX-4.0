@@ -116,10 +116,16 @@ nav {
 .door-front { 
     background-color: #000; 
     background-image: url('images/vault-door-texture.jpg'); 
-    background-size: cover; background-position: center; 
-    z-index: 2; overflow: hidden; 
+    background-size: cover; 
+    background-position: center; 
+    z-index: 2; 
+    overflow: hidden; 
+    /* Ensure the front face is always treated as the top layer before interaction */
+    -webkit-transform: rotateY(0deg);
+    transform: rotateY(0deg);
+    -webkit-backface-visibility: hidden;
+    backface-visibility: hidden;
 }
-
 .door-back { 
     background-color: #111; 
     background-image: url('images/events_page_i1.jpeg'); 
@@ -127,7 +133,20 @@ nav {
     transform: rotateY(180deg); z-index: 1; 
 }
 
-.vault-video { width: 100%; height: 100%; object-fit: cover; pointer-events: none; mix-blend-mode: screen; }
+.vault-video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block; /* Ensure it takes up space */
+    opacity: 1;
+    /* This prevents the "blank" flicker on iOS */
+    -webkit-transform: translateZ(0);
+    transform: translateZ(0);
+}
+
+video[poster] {
+    object-fit: cover;
+}
 
 .text-overlay { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; z-index: 10; transition: opacity 0.3s; }
 

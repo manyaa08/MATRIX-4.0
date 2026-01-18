@@ -149,6 +149,14 @@
             document.body.style.overflow = 'auto';
         });
         overlay.addEventListener('click', (e) => { if(e.target === overlay) { overlay.classList.remove('active'); document.body.style.overflow = 'auto'; } });
+        window.addEventListener('load', () => {
+            document.querySelectorAll('.vault-video').forEach(video => {
+                // Forces the video to load and show the first frame
+                video.load();
+                // Play briefly and pause if you don't want it looping yet, 
+                // or just let 'autoplay loop' handle it.
+            });
+        });
     </script>
 </body>
 </html>
