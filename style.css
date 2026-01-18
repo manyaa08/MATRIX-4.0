@@ -274,25 +274,38 @@
             
             /* Home Content Adjustments */
             .hero-section { 
-                padding-top: 80px; /* Reduced to account for the fixed nav height only */
-                min-height: 100vh;  /* Ensures the section takes full height */
-                justify-content: center; /* Centers content vertically */
+                padding: 120px 20px 40px 20px; /* 80px top padding to clear the fixed nav */
+                min-height: 100vh;           /* Use full viewport height */
+                display: flex;
+                flex-direction: column;
+                justify-content: space-evenly; /* Distributes elements with equal gaps */
+                align-items: center;
             }
-            .lead-fullform { gap: 15px; font-size: 0.8rem; margin-bottom: 30px; padding: 0 10px; }
+            .lead-fullform { 
+                gap: clamp(10px, 3vw, 20px); 
+                font-size: 0.75rem; 
+                margin-bottom: 10px; 
+                padding: 0 5px; 
+                flex-wrap: wrap; /* Allows text to wrap on very small screens */
+            }
             .lead-fullform span { text-shadow: 0 0 5px rgba(255,255,255,0.2); }
             
             .hero-pretitle { font-size: 0.9rem; letter-spacing: 2px; }
-            .hero-title { font-size: 2.5rem; letter-spacing: 2px; }
+            .hero-title { 
+                font-size: 2.8rem; 
+                letter-spacing: 2px;
+                margin: 15px 0; 
+            }
             .hero-subtitle { 
                 font-size: 1rem; letter-spacing: 3px; white-space: normal;
                 border-right: none; animation: none; width: auto;
             }
 
-            .timer-container { gap: 15px; }
+            .timer-container { gap: 12px;margin: 10px 0; }
             .time-box { min-width: 70px; padding: 10px; }
             .time-value { font-size: 1.5rem; }
             .time-label { font-size: 0.6rem; letter-spacing: 1px; }
-            .cta-btn { font-size: 1rem; padding: 12px 30px; }
+            .cta-btn { font-size: 1.1rem; padding: 15px 35px; margin: 20px; }
         }
 
         @media (max-width: 400px) {
