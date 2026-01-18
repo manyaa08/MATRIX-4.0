@@ -52,11 +52,11 @@
                         <label for="fname" class="form-label">First Name</label>
                     </div>
                     
-                    <div class="form-group">
-                        <input type="text" id="lname" name="lname" class="form-input" placeholder=" " required 
-                            pattern="[A-Za-z]+" title="Letters only, no spaces allowed.">
-                        <label for="lname" class="form-label">Last Name</label>
-                    </div>
+                   <div class="form-group">
+                        <input type="text" id="lname" name="lname" class="form-input" placeholder=" " 
+                            pattern="[A-Za-z]*" title="Letters only, no spaces allowed.">
+                        <label for="lname" class="form-label">Last Name (Optional)</label>
+                    </div> 
 
                     <div class="form-group">
                         <input type="email" id="email" name="email" class="form-input" placeholder=" " required 
@@ -200,7 +200,8 @@
         const emailInput = document.getElementById('email');
         const phoneInput = document.getElementById('phone');
 
-        // Prevent spaces and non-letters in Names
+        // This remains the same, it will just replace characters if they type, 
+        // but won't do anything if the field is empty.
         [fnameInput, lnameInput].forEach(el => {
             el.addEventListener('input', () => {
                 el.value = el.value.replace(/[^A-Za-z]/g, '');
@@ -230,26 +231,27 @@
         contactForm.addEventListener('submit', function(e) {
             e.preventDefault();
 
-            // --- HARD GATE: THAPAR DOMAIN CHECK ---
+            // --- 1. HARD GATE: THAPAR DOMAIN CHECK ---
             const emailValue = emailInput.value.trim().toLowerCase();
             if (!emailValue.endsWith('@thapar.edu')) {
                 formStatus.style.color = "#ff3333";
                 formStatus.textContent = "> ERROR: AUTHORIZED @THAPAR.EDU ID REQUIRED.";
+                formStatus.scrollIntoView({ behavior: 'smooth', block: 'center' }); // <-- SCROLL HERE
                 emailInput.focus();
-                return; // Kill submission
+                return; 
             }
 
-            // 1. Prepare Data
+            // 2. Lock UI & Start Transmission
             const formData = new FormData(contactForm);
             const body = new URLSearchParams(formData).toString();
 
-            // 2. Lock UI (Heist Theme)
             submitBtn.disabled = true;
             allInputs.forEach(input => input.disabled = true);
             
             submitBtn.innerText = "TRANSMITTING...";
             formStatus.style.color = "#fff";
             formStatus.textContent = "> Establishing secure uplink...";
+            formStatus.scrollIntoView({ behavior: 'smooth', block: 'center' }); // <-- SCROLL HERE
 
             // 3. Send to Google Sheets
             fetch(WEB_APP_URL, {
@@ -259,20 +261,27 @@
                 body: body
             })
             .then(() => {
+                // 1. Show success immediately
                 formStatus.style.color = "#00ff00";
                 formStatus.textContent = "> INTEL RECEIVED. TRANSMISSION SECURE.";
+                formStatus.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                
+                // 2. Reset the form right away
                 contactForm.reset();
                 
+                // 3. Unlock the UI faster (2 seconds instead of 5)
                 setTimeout(() => { 
                     formStatus.textContent = ""; 
                     submitBtn.innerText = "TRANSMIT DATA";
                     submitBtn.disabled = false;
                     allInputs.forEach(input => input.disabled = false);
-                }, 5000);
+                }, 2000); 
             })
             .catch(err => {
                 formStatus.style.color = "#ff3333";
                 formStatus.textContent = "> ERROR: UPLINK INTERRUPTED.";
+                formStatus.scrollIntoView({ behavior: 'smooth', block: 'center' }); // <-- SCROLL HERE
+                
                 submitBtn.disabled = false;
                 allInputs.forEach(input => input.disabled = false);
                 submitBtn.innerText = "RETRY TRANSMISSION";

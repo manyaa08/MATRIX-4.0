@@ -325,3 +325,98 @@
             .full-width, .submit-btn { grid-column: span 1; }
             #art-collage { grid-template-columns: repeat(2, 1fr); grid-template-rows: repeat(3, 1fr); }
         }
+
+/* --- 1. LAPTOP & TABLET VIEW (Side-by-Side) --- */
+/* This applies to everything wider than 600px */
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Two columns */
+    gap: 20px;
+    width: 100%;
+}
+
+.full-width {
+    grid-column: span 2; /* Message and Status span both columns */
+}
+
+.submit-btn {
+    grid-column: span 2; /* Button spans both columns at the bottom */
+}
+
+/* --- 2. TABLET SPECIFIC ADJUSTMENTS --- */
+/* Narrower tablets or landscape phones */
+@media screen and (max-width: 1024px) and (min-width: 601px) {
+    .contact-container {
+        width: 90%; 
+        max-width: 700px;
+    }
+}
+
+/* --- 3. MOBILE VIEW (One after the other) --- */
+/* This triggers only on small smartphone screens */
+@media screen and (max-width: 600px) {
+    .form-grid {
+        display: flex;
+        flex-direction: column; /* Stacked vertically */
+        gap: 15px;
+    }
+
+    .form-group, .full-width, .submit-btn {
+        width: 100%;
+        grid-column: span 1; /* Reset grid behavior */
+    }
+
+    .contact-container {
+        padding: 20px;
+        width: 95%;
+    }
+
+    .contact-header h1 {
+        font-size: 1.5rem;
+    }
+
+    /* Move social icons below the form on mobile */
+    .content-layout-wrapper {
+        flex-direction: column;
+    }
+    
+    .social-dock-vertical {
+        flex-direction: row;
+        margin-top: 20px;
+    }
+
+    .card-vertical {
+        flex-direction: row;
+        gap: 10px;
+    }
+}
+
+.main-content {
+    padding-bottom: 80px; /* Adjust based on your layout */
+}
+
+/* --- FIX FOR GOOGLE AUTOFILL WHITE BACKGROUND --- */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus,
+textarea:-webkit-autofill,
+textarea:-webkit-autofill:hover,
+textarea:-webkit-autofill:focus {
+    /* This overrides the background color by using a massive inner shadow */
+    -webkit-box-shadow: 0 0 0px 1000px #1a0505 inset !important;
+    /* This keeps the text color white */
+    -webkit-text-fill-color: white !important;
+    /* This ensures the border matches your focus state if needed */
+    border: 1px solid rgba(255, 50, 50, 0.3);
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Optional: Handles the label behavior when autofilled */
+.form-input:-webkit-autofill ~ .form-label {
+    top: -10px;
+    left: 10px;
+    font-size: 0.8rem;
+    color: #ff3333;
+    background-color: #1a0505;
+    border-radius: 2px;
+}
