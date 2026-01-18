@@ -273,7 +273,11 @@
             .hamburger.toggle span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
             
             /* Home Content Adjustments */
-            .hero-section { padding-top: 100px; }
+            .hero-section { 
+                padding-top: 80px; /* Reduced to account for the fixed nav height only */
+                min-height: 100vh;  /* Ensures the section takes full height */
+                justify-content: center; /* Centers content vertically */
+            }
             .lead-fullform { gap: 15px; font-size: 0.8rem; margin-bottom: 30px; padding: 0 10px; }
             .lead-fullform span { text-shadow: 0 0 5px rgba(255,255,255,0.2); }
             
