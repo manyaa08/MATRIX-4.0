@@ -297,3 +297,49 @@ nav {
     .rules-list li { font-size: 1.5rem; letter-spacing: 2px; }
     .register-btn { font-size: 1.1rem; }
 }
+
+
+.interior-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 15px; /* Adds space between the heading and buttons */
+}
+
+.button-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px; /* Adds space between the two buttons */
+    width: 100%;
+    align-items: center;
+}
+
+/* Styling the new Register Button to stand out */
+.reg-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background: #00ffcc; /* Example: A bright teal/matrix color */
+    color: #000;
+    text-decoration: none;
+    font-family: 'Orbitron', sans-serif;
+    font-weight: bold;
+    font-size: 0.9rem;
+    border-radius: 5px;
+    transition: all 0.3s ease;
+    border: 2px solid transparent;
+    width: 80%; /* Consistent width */
+    text-align: center;
+}
+
+.reg-btn:hover {
+    background: transparent;
+    color: #00ffcc;
+    border: 2px solid #00ffcc;
+    box-shadow: 0 0 15px #00ffcc;
+}
+
+/* Ensure the original view-btn has a similar width for symmetry */
+.view-btn {
+    width: 80%;
+    text-align: center;
+}
