@@ -238,13 +238,21 @@
         
         /* Tablet/Mobile Breakpoint (Matched to Contact Page: 968px) */
         @media (max-width: 968px) {
-            nav { padding: 0 20px; }
+                    nav { 
+                padding: 0 20px; 
+                height: 75px; /* Reduced from 80px (80% of original) */
+            }
+
+            /* Adjust logo size to fit the smaller nav height */
+            .logo img {
+                height: 39px; /* Reduced from 45px */
+            }
+
             .hamburger { display: flex; }
 
             /* Mobile Menu Styling - Contact Page Style */
             .nav-links {
                 position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-                /* Right Drawer Effect: Transparent left, Dark right */
                 background: linear-gradient(to left, #000000 0%, #000000 55%, rgba(0,0,0,0.1) 100%);
                 backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
                 flex-direction: column; align-items: flex-end; justify-content: center;
@@ -256,31 +264,29 @@
             }
             .nav-links.active { transform: translateX(0); opacity: 1; pointer-events: all; }
             
-            /* --- UPDATED HAMBURGER LINKS STYLING (SMALLER) --- */
             .nav-links a { 
-                font-size: 1.1rem; /* Changed from 1.8rem to 1.1rem */
-                margin: 10px 0;    /* Changed from 20px to 10px */
+                font-size: 1.1rem; 
+                margin: 10px 0;    
                 width: auto; 
                 text-align: right; 
                 display: block; 
-                font-weight: 500; /* Lighter font weight */
+                font-weight: 500; 
             }
             .nav-links a::after { left: auto; right: 0; }
 
-            /* Updated X Animation for Cleaner Look */
             .hamburger.toggle span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
             .hamburger.toggle span:nth-child(2) { opacity: 0; }
             .hamburger.toggle span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
             
             /* Home Content Adjustments */
             .hero-section { 
-                padding-top: 100px; /* Offset for fixed navbar height */
+                padding-top: 80px; /* Reduced from 100px to match thinner nav */
                 min-height: 100vh;
                 display: flex;
                 flex-direction: column;
-                justify-content: center; /* Initial center for alignment */
+                justify-content: center; 
                 align-items: center;
-                gap: 4vh; /* This creates a consistent vertical gap based on screen height */
+                gap: 4vh; 
             }
             .lead-fullform { 
                 margin-top: 2vh;
