@@ -240,12 +240,12 @@
         @media (max-width: 968px) {
                     nav { 
                 padding: 0 20px; 
-                height: 75px; /* Reduced from 80px (80% of original) */
+                height: 72px; /* Reduced from 80px (80% of original) */
             }
 
             /* Adjust logo size to fit the smaller nav height */
             .logo img {
-                height: 39px; /* Reduced from 45px */
+                height: 37px; /* Reduced from 45px */
             }
 
             .hamburger { display: flex; }
