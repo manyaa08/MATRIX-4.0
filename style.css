@@ -281,7 +281,7 @@
             
             /* Home Content Adjustments */
             .hero-section { 
-                padding-top: 90px; /* Reduced from 100px to match thinner nav */
+                padding-top: 95px; /* Reduced from 100px to match thinner nav */
                 max-height: 100vh;
                 display: flex;
                 flex-direction: column;
