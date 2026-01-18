@@ -238,20 +238,47 @@ nav {
    6. RESPONSIVE MEDIA QUERIES
    ========================================= */
 @media (max-width: 968px) {
-    nav { padding: 0 25px; }
+    nav { 
+        padding: 0 20px; 
+        height: 72px; /* Reduced from 80px (80% of original) */
+    }
+
+            /* Adjust logo size to fit the smaller nav height */
+    .logo img {
+        height: 37px; /* Reduced from 45px */
+    }
+
     .hamburger { display: flex; }
+
+            /* Mobile Menu Styling - Contact Page Style */
     .nav-links {
         position: fixed; top: 0; left: 0; width: 100vw; height: 100vh;
-        background: rgba(0,0,0,0.95); flex-direction: column;
-        align-items: center; justify-content: center; transform: translateY(-100%); 
-        transition: transform 0.4s ease; z-index: 5001; gap: 40px;
+        background: linear-gradient(to left, #000000 0%, #000000 55%, rgba(0,0,0,0.1) 100%);
+        backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px);
+        flex-direction: column; align-items: flex-end; justify-content: flex-start;
+        padding-top: 90px;
+        padding-right: 50px;
+        transform: translateX(100%); opacity: 0;
+        transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1), opacity 0.4s ease;
+        z-index: 2000; pointer-events: none;
+        will-change: transform, opacity;
     }
-    .nav-links.active { transform: translateY(0); }
-    .hamburger.toggle span:nth-child(1) { transform: rotate(45deg) translate(5px, 6px); }
+    .nav-links.active { transform: translateX(0); opacity: 1; pointer-events: all; }
+            
+    .nav-links a { 
+        padding-right: 20px;
+        font-size: 1.1rem; 
+        margin: 12px 0;    
+        width: auto; 
+        text-align: right; 
+        display: block; 
+        font-weight: 500; 
+    }
+    .nav-links a::after { left: auto; right: 0; }
+
+    .hamburger.toggle span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
     .hamburger.toggle span:nth-child(2) { opacity: 0; }
-    .hamburger.toggle span:nth-child(3) { transform: rotate(-45deg) translate(5px, -6px); }
-    .nav-links a { font-size: 1.5rem; }
-    .hero h1 { font-size: 3rem; }
+    .hamburger.toggle span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
 }
 
 @media (max-width: 768px) {
