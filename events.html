@@ -84,7 +84,7 @@
     </div>
 
     <script>
-        /* --- NAVIGATION --- */
+                /* --- NAVIGATION --- */
         const hamburger = document.getElementById('hamburger-menu');
         const navMenu = document.getElementById('nav-menu');
         hamburger.addEventListener('click', () => {
@@ -94,36 +94,60 @@
 
         /* --- VAULT ANIMATION --- */
         const allCards = document.querySelectorAll('.day-card');
+
         function openVault(card) {
+            // Close other vaults if they are open
             allCards.forEach(other => { if(other !== card) closeVault(other); });
+            
             const video = card.querySelector('.vault-video');
             video.currentTime = 0;
             const playPromise = video.play();
+            
             if (playPromise !== undefined) {
                 playPromise.then(() => {
-                    if (card.matches(':hover') || card.classList.contains('unlocked')) {
-                        card.classList.add('unlocked');
-                    } else {
-                        video.pause(); video.currentTime = 0;
-                    }
+                    card.classList.add('unlocked');
                 }).catch(() => {});
             }
         }
+
         function closeVault(card) {
             const video = card.querySelector('.vault-video');
             card.classList.remove('unlocked');
             setTimeout(() => {
                 if (!card.classList.contains('unlocked')) {
-                    video.pause(); video.currentTime = 0;
+                    video.pause(); 
+                    video.currentTime = 0;
                 }
             }, 50);
         }
+
         allCards.forEach(card => {
-            card.addEventListener('mouseenter', () => { if(window.matchMedia("(hover: hover)").matches) openVault(card); });
-            card.addEventListener('mouseleave', () => { if(window.matchMedia("(hover: hover)").matches) closeVault(card); });
+            // LAPTOP/DESKTOP: Trigger on hover
+            card.addEventListener('mouseenter', () => { 
+                if(window.matchMedia("(hover: hover)").matches) {
+                    openVault(card); 
+                }
+            });
+
+            card.addEventListener('mouseleave', () => { 
+                if(window.matchMedia("(hover: hover)").matches) {
+                    closeVault(card); 
+                }
+            });
+
+            // MOBILE/TABLET: Trigger on click (pointerdown)
             card.addEventListener('pointerdown', (e) => {
-                if (e.target.closest('.view-btn')) return;
-                card.classList.contains('unlocked') ? closeVault(card) : openVault(card);
+                // Don't trigger door close if clicking the actual buttons inside
+                if (e.target.closest('.view-btn') || e.target.closest('.reg-btn')) return;
+
+                // Only use click logic if the device does NOT support hover (mobile)
+                if (!window.matchMedia("(hover: hover)").matches) {
+                    if (card.classList.contains('unlocked')) {
+                        closeVault(card);
+                    } else {
+                        openVault(card);
+                    }
+                }
             });
         });
 
@@ -135,27 +159,39 @@
             "DAY 02": ["Coming Soon."],
             "DAY 03": ["Coming Soon."],
         };
+
         document.querySelectorAll('.view-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
-                e.preventDefault(); e.stopPropagation();
+                e.preventDefault(); 
+                e.stopPropagation();
                 const day = btn.closest('.day-card').querySelector('.day-text').innerText;
                 modalRules.innerHTML = rulesData[day].map(r => `<li>${r}</li>`).join('');
                 overlay.classList.add('active');
                 document.body.style.overflow = 'hidden';
             });
         });
+
         document.getElementById('closeModal').addEventListener('click', () => {
             overlay.classList.remove('active');
             document.body.style.overflow = 'auto';
         });
-        overlay.addEventListener('click', (e) => { if(e.target === overlay) { overlay.classList.remove('active'); document.body.style.overflow = 'auto'; } });
+
+        overlay.addEventListener('click', (e) => { 
+            if(e.target === overlay) { 
+                overlay.classList.remove('active'); 
+                document.body.style.overflow = 'auto'; 
+            } 
+        });
+
         window.addEventListener('load', () => {
             document.querySelectorAll('.vault-video').forEach(video => {
-                // Forces the video to load and show the first frame
                 video.load();
-                // Play briefly and pause if you don't want it looping yet, 
-                // or just let 'autoplay loop' handle it.
             });
+        });
+        let originalTitle = document.title; 
+        window.addEventListener("visibilitychange", function() {
+            if (document.hidden) { document.title = "Please come back! 🔴"; } 
+            else { document.title = originalTitle; updateTimer(); }
         });
     </script>
 </body>
