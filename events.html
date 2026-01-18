@@ -8,46 +8,18 @@
     <link rel="apple-touch-icon" href="images/Favicon.png">
     
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;700&display=swap" rel="stylesheet">
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600;700;900&family=Orbitron:wght@500;700;900&display=swap" rel="stylesheet">
+
     <link rel="stylesheet" href="events.css">
-
-    <style>
-        /* CRITICAL MOBILE OPTIMIZATIONS */
-        .day-card {
-            touch-action: manipulation; 
-            -webkit-tap-highlight-color: transparent;
-            user-select: none;
-            -webkit-touch-callout: none;
-            cursor: pointer;
-        }
-
-        /* Prevent the video from intercepting taps */
-        .vault-video {
-            pointer-events: none;
-        }
-
-        /* Smooth animation timing */
-        .cover {
-            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        /* Prevent page from scrolling horizontally during animation */
-        body {
-            overflow-x: hidden;
-        }
-    </style>
 </head>
 <body>
 
     <div class="page-wrapper">
-        
         <nav>
-            <a href="index.html" class="logo">
+            <div class="logo">
                 <img src="images/matrix_lead_logo.png" alt="LEAD Logo">
-            </a>
-            <div class="hamburger" id="hamburger-menu">
-                <span></span><span></span><span></span>
             </div>
+            <div class="hamburger" id="hamburger-menu"><span></span><span></span><span></span></div>
             <div class="nav-links" id="nav-menu">
                 <a href="index.html">Home</a>
                 <a href="events.html" class="active">Events</a>
@@ -62,169 +34,104 @@
         </div>
 
         <div class="events-grid">
-            
-            <div class="day-card">
-                <div class="interior-content">
-                    <h2 class="rulebook-heading">RULEBOOK</h2>
-                    <a href="#" class="view-btn">ACCESS FILE</a>
-                    <a href="Registration_index.html" class="view-btn register-btn">REGISTER NOW</a>
-                </div>
+            <div class="day-card" id="card-1">
+                <div class="interior-content"><h2 class="rulebook-heading">RULEBOOK</h2><a href="#" class="view-btn">ACCESS FILE</a></div>
                 <div class="cover">
-                    <div class="door-front">
-                        <video class="vault-video" muted playsinline preload="auto">
-                            <source src="images/Vault_Handle_Animation_Generation.mp4" type="video/mp4">
-                        </video>
-                        <div class="text-overlay">
-                            <span class="day-text">DAY 01</span>
-                        </div>
-                    </div>
+                    <div class="door-front"><video class="vault-video" muted playsinline preload="auto"><source src="images/Vault_Handle_Animation_Generation.mp4" type="video/mp4"></video><div class="text-overlay"><span class="day-text">DAY 01</span></div></div>
                     <div class="door-back"></div>
                 </div>
             </div>
-
-            <div class="day-card">
-                <div class="interior-content">
-                    <h2 class="rulebook-heading">RULEBOOK</h2>
-                    <a href="#" class="view-btn">ACCESS FILE</a>
-                    <a href="Registration_index.html" class="view-btn register-btn">REGISTER NOW</a>
-                </div>
+            <div class="day-card" id="card-2">
+                <div class="interior-content"><h2 class="rulebook-heading">RULEBOOK</h2><a href="#" class="view-btn">ACCESS FILE</a></div>
                 <div class="cover">
-                    <div class="door-front">
-                        <video class="vault-video" muted playsinline preload="auto">
-                            <source src="images/Vault_Handle_Animation_Generation.mp4" type="video/mp4">
-                        </video>
-                        <div class="text-overlay">
-                            <span class="day-text">DAY 02</span>
-                        </div>
-                    </div>
+                    <div class="door-front"><video class="vault-video" muted playsinline preload="auto"><source src="images/Vault_Handle_Animation_Generation.mp4" type="video/mp4"></video><div class="text-overlay"><span class="day-text">DAY 02</span></div></div>
                     <div class="door-back"></div>
                 </div>
             </div>
-
-            <div class="day-card">
-                <div class="interior-content">
-                    <h2 class="rulebook-heading">RULEBOOK</h2>
-                    <a href="#" class="view-btn">ACCESS FILE</a>
-                    <a href="Registration_index.html" class="view-btn register-btn">REGISTER NOW</a>
-                </div>
+            <div class="day-card" id="card-3">
+                <div class="interior-content"><h2 class="rulebook-heading">RULEBOOK</h2><a href="#" class="view-btn">ACCESS FILE</a></div>
                 <div class="cover">
-                    <div class="door-front">
-                        <video class="vault-video" muted playsinline preload="auto">
-                            <source src="images/Vault_Handle_Animation_Generation.mp4" type="video/mp4">
-                        </video>
-                        <div class="text-overlay">
-                            <span class="day-text">DAY 03</span>
-                        </div>
-                    </div>
+                    <div class="door-front"><video class="vault-video" muted playsinline preload="auto"><source src="images/Vault_Handle_Animation_Generation.mp4" type="video/mp4"></video><div class="text-overlay"><span class="day-text">DAY 03</span></div></div>
                     <div class="door-back"></div>
                 </div>
             </div>
+        </div>
+    </div>
 
+    <div class="rulebook-overlay" id="rulebookOverlay">
+        <div class="metallic-card">
+            <div class="close-modal" id="closeModal">&times;</div>
+            <h2 class="modal-heading">RULEBOOK</h2>
+            <ul class="rules-list" id="modalRules"></ul>
         </div>
     </div>
 
     <script>
-        /* --- NAVBAR SCRIPT --- */
+        /* --- NAVIGATION --- */
         const hamburger = document.getElementById('hamburger-menu');
         const navMenu = document.getElementById('nav-menu');
+        hamburger.addEventListener('click', () => {
+            navMenu.classList.toggle('active');
+            hamburger.classList.toggle('toggle');
+        });
 
-        if(hamburger && navMenu){
-            hamburger.addEventListener('click', () => {
-                navMenu.classList.toggle('active');
-                hamburger.classList.toggle('toggle');
-            });
-        }
-
-        /* --- VAULT ANIMATION LOGIC --- */
+        /* --- VAULT ANIMATION --- */
         const allCards = document.querySelectorAll('.day-card');
-
         function openVault(card) {
-            // Close any other open vaults first
             allCards.forEach(other => { if(other !== card) closeVault(other); });
-
             const video = card.querySelector('.vault-video');
             video.currentTime = 0;
-            
             const playPromise = video.play();
             if (playPromise !== undefined) {
                 playPromise.then(() => {
-                    card.classList.add('unlocked');
-                }).catch(() => {
-                    card.classList.add('unlocked');
-                });
+                    if (card.matches(':hover') || card.classList.contains('unlocked')) {
+                        card.classList.add('unlocked');
+                    } else {
+                        video.pause(); video.currentTime = 0;
+                    }
+                }).catch(() => {});
             }
         }
-
         function closeVault(card) {
             const video = card.querySelector('.vault-video');
             card.classList.remove('unlocked');
-            video.pause();
-            video.currentTime = 0;
+            setTimeout(() => {
+                if (!card.classList.contains('unlocked')) {
+                    video.pause(); video.currentTime = 0;
+                }
+            }, 50);
         }
-
         allCards.forEach(card => {
-            // 1. LAPTOP HOVER
-            card.addEventListener('mouseenter', () => {
-                if (window.matchMedia("(hover: hover)").matches) openVault(card);
-            });
-            card.addEventListener('mouseleave', () => {
-                if (window.matchMedia("(hover: hover)").matches) closeVault(card);
-            });
-
-            // 2. TOGGLE ON TAP (Universal)
+            card.addEventListener('mouseenter', () => { if(window.matchMedia("(hover: hover)").matches) openVault(card); });
+            card.addEventListener('mouseleave', () => { if(window.matchMedia("(hover: hover)").matches) closeVault(card); });
             card.addEventListener('pointerdown', (e) => {
-                e.stopPropagation(); 
-                
-                if (card.classList.contains('unlocked')) {
-                    closeVault(card);
-                } else {
-                    openVault(card);
-                }
-            });
-
-            card.addEventListener('contextmenu', e => e.preventDefault());
-        });
-
-        // 3. CLOSE ON EXTERNAL TAP
-        document.addEventListener('pointerdown', (e) => {
-            allCards.forEach(card => {
-                if (!card.contains(e.target)) {
-                    closeVault(card);
-                }
+                if (e.target.closest('.view-btn')) return;
+                card.classList.contains('unlocked') ? closeVault(card) : openVault(card);
             });
         });
 
-        // 4. PREVENT BUTTON CLICKS FROM CLOSING THE VAULT
+        /* --- MODAL LOGIC --- */
+        const overlay = document.getElementById('rulebookOverlay');
+        const modalRules = document.getElementById('modalRules');
+        const rulesData = {
+            "DAY 01": ["Coming Soon."],
+            "DAY 02": ["Coming Soon."],
+            "DAY 03": ["Coming Soon."],
+        };
         document.querySelectorAll('.view-btn').forEach(btn => {
-            btn.addEventListener('pointerdown', (e) => {
-                e.stopPropagation(); 
+            btn.addEventListener('click', (e) => {
+                e.preventDefault(); e.stopPropagation();
+                const day = btn.closest('.day-card').querySelector('.day-text').innerText;
+                modalRules.innerHTML = rulesData[day].map(r => `<li>${r}</li>`).join('');
+                overlay.classList.add('active');
+                document.body.style.overflow = 'hidden';
             });
         });
-
-        /* --- FIX FOR BLACK VIDEO ON MOBILE --- */
-        // This ensures the first frame renders immediately on page load
-        window.addEventListener('load', () => {
-            document.querySelectorAll('.vault-video').forEach(video => {
-                video.load(); 
-                // A quick play/pause nudge helps force the browser to render the initial frame
-                const nudge = video.play();
-                if (nudge !== undefined) {
-                    nudge.then(() => {
-                        video.pause();
-                        video.currentTime = 0;
-                    }).catch(() => {
-                        // Catching autoplay prevention; video.load() is usually enough
-                    });
-                }
-            });
+        document.getElementById('closeModal').addEventListener('click', () => {
+            overlay.classList.remove('active');
+            document.body.style.overflow = 'auto';
         });
-
-        /* --- TITLE SWAP LOGIC --- */
-        let originalTitle = document.title; 
-        window.addEventListener("visibilitychange", function() {
-            document.title = document.hidden ? "Please come back! 🔴" : originalTitle;
-        });
+        overlay.addEventListener('click', (e) => { if(e.target === overlay) { overlay.classList.remove('active'); document.body.style.overflow = 'auto'; } });
     </script>
-
 </body>
 </html>
