@@ -169,49 +169,43 @@
         });
         
     </script>
-    <script>
+<script>
     document.addEventListener('DOMContentLoaded', () => {
         const envelopes = document.querySelectorAll('.envelope-wrapper');
 
-        document.addEventListener('click', (e) => {
-            // Find if the click was inside an envelope wrapper
-            const clickedEnvelope = e.target.closest('.envelope-wrapper');
+        envelopes.forEach(env => {
+            env.addEventListener('click', (e) => {
+                
+                // --- THE FIX ---
+                // 1. Check if the device supports Hover (Laptop/Desktop)
+                // If true, we RETURN immediately. We let CSS :hover handle it.
+                // This prevents the "is-open" class from getting stuck on Desktop.
+                if (window.matchMedia("(hover: hover)").matches) {
+                    return;
+                }
 
-            envelopes.forEach(env => {
-                if (env === clickedEnvelope) {
-                    // If we clicked this specific envelope, toggle it
-                    env.classList.toggle('is-open');
-                } else {
-                    // If we clicked the background or a different envelope, close this one
-                    env.classList.remove('is-open');
+                // 2. If we are here, it is Mobile (No hover). Run the click logic.
+                e.stopPropagation();
+
+                // Check if this specific envelope is already open
+                const isOpen = env.classList.contains('is-open');
+
+                // Close all envelopes first (so only one is open at a time)
+                envelopes.forEach(el => el.classList.remove('is-open'));
+
+                // If it wasn't open, open it. 
+                if (!isOpen) {
+                    env.classList.add('is-open');
                 }
             });
         });
-    });
-    document.addEventListener('DOMContentLoaded', () => {
-    const envelopes = document.querySelectorAll('.envelope-wrapper');
 
-    envelopes.forEach(env => {
-        env.addEventListener('click', (e) => {
-            // Prevent event from bubbling up to the document
-            e.stopPropagation();
-
-            // Check if this specific envelope is already open
-            const isOpen = env.classList.contains('is-open');
-
-            // Close all envelopes first
-            envelopes.forEach(el => el.classList.remove('is-open'));
-
-            // If it wasn't open, open it (1st tap); if it was open, it stays closed (2nd tap)
-            if (!isOpen) {
-                env.classList.add('is-open');
-            }
-        });
-    });
-
-    // Close envelopes if user taps anywhere else on the screen
+        // Close envelopes if user taps anywhere else on the screen
         document.addEventListener('click', () => {
-            envelopes.forEach(env => env.classList.remove('is-open'));
+            // Only run this cleanup on mobile
+            if (!window.matchMedia("(hover: hover)").matches) {
+                envelopes.forEach(env => env.classList.remove('is-open'));
+            }
         });
     });
     </script>
