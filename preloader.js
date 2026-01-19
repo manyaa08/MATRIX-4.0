@@ -1,11 +1,13 @@
 document.addEventListener("DOMContentLoaded", () => {
     // --- 1. ELEMENT SELECTION ---
     const plMaster = document.getElementById('pl_master_wrapper');
+    const mainSite = document.getElementById('main_site_content');
+    
+    // Elements for the animation phases
     const plGlitch = document.getElementById('pl_glitch_container');
     const progressPre = document.getElementById('pl_progress_bar');
     const consolePre = document.getElementById('pl_console_output');
     const keyPre = document.getElementById('pl_key_gen');
-    
     const plInterface = document.getElementById('pl_interface');
     const staticBg = document.getElementById('pl_bg_static');
     const codeLog = document.getElementById('pl_code_log');
@@ -15,21 +17,18 @@ document.addEventListener("DOMContentLoaded", () => {
     const acCard = document.getElementById('pl_card');
     const shackle = document.getElementById('pl_shackle');
     const blackout = document.getElementById('pl_blackout');
-    
-    const mainSite = document.getElementById('main_site_content');
 
-    // --- LOGIC TO DETECT RELOAD VS NAVIGATION ---
-    const navEntries = performance.getEntriesByType('navigation');
-    const isReload = navEntries.length > 0 && navEntries[0].type === 'reload';
+    // --- 2. MODIFIED SESSION CHECK ---
+    // We only check if the flag exists. We ignore performance.navigation types (reloads).
     const hasVisitedThisSession = sessionStorage.getItem('pl_seen');
 
-    if (hasVisitedThisSession && !isReload) {
+    if (hasVisitedThisSession) {
         if (plMaster) plMaster.style.display = 'none';
         if (mainSite) {
             mainSite.style.display = 'block';
             mainSite.style.opacity = '1';
         }
-        return; 
+        return; // Stop execution here
     }
 
     // --- NEW: ADVANCED BACKGROUND LOADING ---
