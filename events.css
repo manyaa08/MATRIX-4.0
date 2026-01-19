@@ -241,7 +241,7 @@ video[poster] {
 
 .close-modal {
     position: absolute; top: 15px; right: 20px; font-size: 2.5rem;
-    font-weight: 900; color: #1a1a1a; cursor: pointer;
+    font-weight: 900; color: #6b0202; cursor: pointer;
     z-index: 6100; transition: transform 0.2s ease;
 
 }
