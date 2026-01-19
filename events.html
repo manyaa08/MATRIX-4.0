@@ -58,7 +58,7 @@
                     </div>
                 </div>
                 <div class="cover">
-                    <div class="door-front"><video class="vault-video" muted playsinline preload="auto"><source src="images/Vault_Handle_Animation_Generation.mp4" type="video/mp4"></video><div class="text-overlay"><span class="day-text"><div class="Text">STEALTH SELL</div></span></div></div>
+                    <div class="door-front"><video class="vault-video" muted playsinline preload="auto"><source src="images/Vault_Handle_Animation_Generation.mp4" type="video/mp4"></video><div class="text-overlay"><span class="day-text">STEALTH SELL</span></div></div>
                     <div class="door-back"></div>
                 </div>
             </div>
@@ -158,9 +158,9 @@
         const overlay = document.getElementById('rulebookOverlay');
         const modalRules = document.getElementById('modalRules');
         const rulesData = {
-            "DAY 01": ["Coming Soon."],
-            "DAY 02": ["Coming Soon."],
-            "DAY 03": ["Coming Soon."],
+            "CODE RED": ["Coming Soon."],
+            "STEALTH SELL": ["Coming Soon."],
+            "PHANTOM": ["Coming Soon."],
         };
 
         document.querySelectorAll('.view-btn').forEach(btn => {
@@ -191,6 +191,9 @@
                 video.load();
             });
         });
+
+
+
         let originalTitle = document.title; 
         window.addEventListener("visibilitychange", function() {
             if (document.hidden) { document.title = "Please come back! 🔴"; } 
