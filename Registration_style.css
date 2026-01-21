@@ -439,3 +439,26 @@ nav {
     letter-spacing: 2px;
     font-size: 16px;
 }
+
+/* --- FIX FOR AUTOFILL WHITE BACKGROUND --- */
+input:-webkit-autofill,
+input:-webkit-autofill:hover, 
+input:-webkit-autofill:focus {
+    /* Match your card's background color (#1f1f1f) */
+    -webkit-box-shadow: 0 0 0px 1000px #1f1f1f inset !important;
+    
+    /* Re-apply your neumorphic inset shadows on top of the solid color */
+    box-shadow: inset 10px 10px 18px rgba(0,0,0,0.8), 
+                inset -10px -10px 18px rgba(255,255,255,0.06) !important;
+    
+    /* Force the text to stay white */
+    -webkit-text-fill-color: white !important;
+    
+    /* Smooth transition to prevent the white flash */
+    transition: background-color 5000s ease-in-out 0s;
+}
+
+/* Fix for the dropdown/input caret and general text rendering */
+input:-internal-autofill-selected {
+    background-color: transparent !important;
+}
