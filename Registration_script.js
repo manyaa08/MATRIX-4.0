@@ -98,7 +98,7 @@ function validateField(input) {
     // Roll Number Validation
     if (name.includes("roll")) {
         if (!/^[17]\d{8,9}$/.test(val)) { 
-            showError(input, "Roll number must be 9-10 digits and start with 1 or 7"); 
+            showError(input, "Invalid roll number"); 
             return false; 
         }
     }
