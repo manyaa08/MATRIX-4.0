@@ -41,21 +41,26 @@ function applySanitization(input) {
     input.addEventListener("input", () => {
         let val = input.value;
 
-        // 1. GLOBAL: Remove all spaces from Email, Phone, and Roll No
+        // 1. NAME FIELDS: Remove digits and special characters (Allow only A-Z and spaces)
+        // We exclude "team_name" if you want teams to have numbers/symbols
+        if (name.includes("name") && !name.includes("team")) {
+            val = val.replace(/[^A-Za-z\s]/g, "");
+        }
+
+        // 2. EMAIL, PHONE, & ROLL NO: Strip all spaces immediately
         if (name.includes("email") || name.includes("phone") || name.includes("roll")) {
             val = val.replace(/\s/g, "");
         }
 
-        // 2. NUMERIC ONLY: Remove everything except digits for Phone and Roll No
+        // 3. PHONE & ROLL NO: Strip everything except digits
         if (name.includes("phone") || name.includes("roll")) {
-            val = val.replace(/\D/g, ""); // \D matches any non-digit character
+            val = val.replace(/\D/g, "");
         }
 
-        // Update the input value with the cleaned version
         input.value = val;
     });
 
-    // Handle Pasting: ensure pasted content is also cleaned immediately
+    // Handle Pasting
     input.addEventListener("paste", (e) => {
         setTimeout(() => {
             input.dispatchEvent(new Event("input"));
@@ -65,25 +70,24 @@ function applySanitization(input) {
 
 function validateField(input) {
     const val = input.value.trim();
-    const rawVal = input.value; 
     const name = input.name;
 
     if (!val) { showError(input, "Please fill in this field"); return false; }
     
+    // Name Validation (Fallback check)
     if (name.includes("name") && !name.includes("team")) {
         if (!/^[A-Za-z\s]+$/.test(val)) { showError(input, "Only alphabets are allowed"); return false; }
     }
     
-    // Updated Email block inside validateField
+    // Email Validation
     if (name.includes("email")) {
-        // Space check is now redundant but kept as a fallback
         if (!val.toLowerCase().endsWith("@thapar.edu")) { 
             showError(input, "Only Thapar mail is accepted"); 
             return false; 
         }
     }
     
-    // Updated Phone block
+    // Phone Validation
     if (name.includes("phone")) {
         if (val.length !== 10) { 
             showError(input, "Phone number must be exactly 10 digits"); 
@@ -91,8 +95,8 @@ function validateField(input) {
         }
     }
     
+    // Roll Number Validation
     if (name.includes("roll")) {
-        // Regex: Starts with 1 or 7, followed by 8 or 9 digits (total length 9 or 10)
         if (!/^[17]\d{8,9}$/.test(val)) { 
             showError(input, "Roll number must be 9-10 digits and start with 1 or 7"); 
             return false; 
@@ -102,6 +106,7 @@ function validateField(input) {
     removeError(input);
     return true;
 }
+
 
 dropdown.querySelector(".dropdown-selected").onclick = () => {
     if (isSubmitting) return;
