@@ -1,4 +1,4 @@
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbzaX4GkG6xyNrmOpIyRZtXpAi1bwTuKmfpOXvFscfZVPhZkBA6nmRqfWwex4J3MugY4/exec";
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbznnPeJ9EwnY0gSQsDRw22-65sqyLccifgH6sVf96CHfHYdcq7yX4h05zCV5o_oB9Zi/exec";
 
 let teamSize = 0;
 let isSubmitting = false; 
@@ -55,6 +55,14 @@ function validateField(input) {
         if (!/^\d{10}$/.test(val)) { showError(input, "Phone number must be 10 digits"); return false; }
     }
     
+    if (name.includes("roll")) {
+        // Regex: Starts with 1 or 7, followed by 8 or 9 digits (total length 9 or 10)
+        if (!/^[17]\d{8,9}$/.test(val)) { 
+            showError(input, "Roll number must be 9-10 digits and start with 1 or 7"); 
+            return false; 
+        }
+    }
+
     removeError(input);
     return true;
 }
@@ -82,18 +90,22 @@ function renderForm() {
     if (teamSize === 1) {
         html = `<h2 class="section-title">Member Details</h2>
                 <input class="input" name="main_member_name" placeholder="Member Name" required>
+                <input class="input" name="main_member_roll" placeholder="Roll Number" maxlength="10" inputmode="numeric" required>
                 <input class="input" name="main_member_email" placeholder="Member Thapar Email ID" required>
                 <input class="input" name="main_member_phone" placeholder="Member Phone No" maxlength="10" inputmode="numeric" required>`;
     } else if (teamSize === 2) {
         html = `<h2 class="section-title">Member Details</h2>
                 <input class="input" name="main_member_name" placeholder="Member 1 Name" required>
+                <input class="input" name="main_member_roll" placeholder="Member 1 Roll No" maxlength="10" inputmode="numeric" required>
                 <input class="input" name="main_member_email" placeholder="Member 1 Thapar Email ID" required>
                 <input class="input" name="main_member_phone" placeholder="Member 1 Phone No" maxlength="10" inputmode="numeric" required>
                 <input class="input" name="member2_name" placeholder="Member 2 Name" required>
+                <input class="input" name="member2_roll" placeholder="Member 2 Roll No" maxlength="10" inputmode="numeric" required>
                 <input class="input" name="member2_phone" placeholder="Member 2 Phone No" maxlength="10" inputmode="numeric" required>`;
     } else if (teamSize > 2) {
         html = `<h2 class="section-title">Team Leader Details</h2>
                 <input class="input" name="team_leader_name" placeholder="Team Leader Name" required>
+                <input class="input" name="team_leader_roll" placeholder="Team Leader Roll No" maxlength="10" inputmode="numeric" required>
                 <input class="input" name="team_leader_email" placeholder="Team Leader Thapar Email ID" required>
                 <input class="input" name="team_leader_phone" placeholder="Team Leader Phone No" maxlength="10" inputmode="numeric" required>
                 <h2 class="section-title">Team Details</h2>
@@ -101,6 +113,7 @@ function renderForm() {
                 <h2 class="section-title">Member Details</h2>`;
         for (let i = 2; i <= teamSize; i++) {
             html += `<input class="input" name="member${i}_name" placeholder="Member ${i} Name" required>
+                     <input class="input" name="member${i}_roll" placeholder="Member ${i} Roll No" maxlength="10" inputmode="numeric" required>
                      <input class="input" name="member${i}_phone" placeholder="Member ${i} Phone No" maxlength="10" inputmode="numeric" required>`;
         }
     }
