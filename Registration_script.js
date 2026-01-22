@@ -35,6 +35,34 @@ function removeError(element) {
     }
 }
 
+function applySanitization(input) {
+    const name = input.name;
+
+    input.addEventListener("input", () => {
+        let val = input.value;
+
+        // 1. GLOBAL: Remove all spaces from Email, Phone, and Roll No
+        if (name.includes("email") || name.includes("phone") || name.includes("roll")) {
+            val = val.replace(/\s/g, "");
+        }
+
+        // 2. NUMERIC ONLY: Remove everything except digits for Phone and Roll No
+        if (name.includes("phone") || name.includes("roll")) {
+            val = val.replace(/\D/g, ""); // \D matches any non-digit character
+        }
+
+        // Update the input value with the cleaned version
+        input.value = val;
+    });
+
+    // Handle Pasting: ensure pasted content is also cleaned immediately
+    input.addEventListener("paste", (e) => {
+        setTimeout(() => {
+            input.dispatchEvent(new Event("input"));
+        }, 0);
+    });
+}
+
 function validateField(input) {
     const val = input.value.trim();
     const rawVal = input.value; 
@@ -46,13 +74,21 @@ function validateField(input) {
         if (!/^[A-Za-z\s]+$/.test(val)) { showError(input, "Only alphabets are allowed"); return false; }
     }
     
+    // Updated Email block inside validateField
     if (name.includes("email")) {
-        if (/\s/.test(rawVal)) { showError(input, "Email cannot contain spaces"); return false; }
-        if (!val.toLowerCase().endsWith("@thapar.edu")) { showError(input, "Only Thapar mail is accepted"); return false; }
+        // Space check is now redundant but kept as a fallback
+        if (!val.toLowerCase().endsWith("@thapar.edu")) { 
+            showError(input, "Only Thapar mail is accepted"); 
+            return false; 
+        }
     }
     
+    // Updated Phone block
     if (name.includes("phone")) {
-        if (!/^\d{10}$/.test(val)) { showError(input, "Phone number must be 10 digits"); return false; }
+        if (val.length !== 10) { 
+            showError(input, "Phone number must be exactly 10 digits"); 
+            return false; 
+        }
     }
     
     if (name.includes("roll")) {
@@ -120,6 +156,12 @@ function renderForm() {
     formArea.innerHTML = html;
     formArea.querySelectorAll(".input").forEach(input => {
         input.addEventListener("blur", () => validateField(input));
+    });
+    // ... existing code in renderForm ...
+    formArea.querySelectorAll(".input").forEach(input => {
+        input.addEventListener("blur", () => validateField(input));
+        // ADD THIS LINE BELOW:
+        applySanitization(input); 
     });
 }
 
