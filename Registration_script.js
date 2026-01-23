@@ -1,4 +1,4 @@
-const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbznnPeJ9EwnY0gSQsDRw22-65sqyLccifgH6sVf96CHfHYdcq7yX4h05zCV5o_oB9Zi/exec";
+const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwLkYv3vTH7_gyNdp_ts00-_0M8w_8900Ip5QKMSRgf7TJa0w7nO4jXdPNXLkdeylsy/exec";
 
 let teamSize = 0;
 let isSubmitting = false; 
