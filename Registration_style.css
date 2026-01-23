@@ -157,18 +157,32 @@ nav {
   width: 500px;
   height: 620px;
   position: relative;
-  border-radius: 36px;
+  /* Match this border-radius to the card + the inset */
+  border-radius: 36px; 
   overflow: hidden;
   box-shadow: 0 0 80px rgba(255,255,255,0.08), 0 50px 100px rgba(0,0,0,0.9);
+  /* Add a background color to act as a mask */
+  background: #1f1f1f; 
 }
 
 .container::before {
   content: "";
   position: absolute;
-  inset: -70px;
-  background: conic-gradient(from 45deg, transparent 75%, rgba(255,255,255,0.9), transparent 100%);
+  /* Use a larger negative inset to ensure the light covers the corners */
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(
+    from 45deg, 
+    transparent 75%, 
+    rgba(255,255,255,0.9), 
+    transparent 100%
+  );
   animation: spin 4s linear infinite;
   pointer-events: none;
+  /* Round the light layer so it doesn't have sharp 'tearing' edges */
+  border-radius: 50%; 
 }
 
 @keyframes spin {
@@ -177,13 +191,16 @@ nav {
 
 .card {
   position: absolute;
-  inset: 2px;
+  /* This creates the 2px border where the light shines through */
+  inset: 2px; 
   border-radius: 34px;
   padding: 40px;
   background: linear-gradient(180deg, rgba(255,255,255,0.08), rgba(0,0,0,0.45)), #1f1f1f;
   backdrop-filter: blur(14px);
+  /* The inset shadow helps blend the edge */
   box-shadow: inset 0 70px 90px rgba(255,255,255,0.08), inset 0 -50px 80px rgba(0,0,0,0.9);
-  overflow: hidden; /* Ensures loader doesn't bleed out of corners */
+  overflow: hidden;
+  z-index: 1; /* Ensure it stays above the light */
 }
 
 .matrix-title {
