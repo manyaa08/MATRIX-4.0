@@ -273,11 +273,8 @@ nav {
   font-size: 16px;
   font-weight: 600;
   margin-bottom: 22px;
-  .input {
-    /* ... your existing code ... */
-    -webkit-appearance: none; /* Removes default iOS styling */
-    appearance: none;
-  }
+  -webkit-appearance: none; /* Correctly placed here */
+  appearance: none;
 }
 
 .input::placeholder { color: rgba(255,255,255,0.35); }

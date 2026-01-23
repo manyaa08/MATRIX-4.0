@@ -308,3 +308,14 @@ if (hamburger && navMenu) {
         });
     });
 }
+
+/* --- CLICK OUTSIDE DROPDOWN TO CLOSE --- */
+document.addEventListener("click", (e) => {
+    // Check if the click was outside the dropdown
+    if (!dropdown.contains(e.target)) {
+        // Only close it if it is currently open
+        if (dropdown.classList.contains("open")) {
+            dropdown.classList.remove("open");
+        }
+    }
+});
