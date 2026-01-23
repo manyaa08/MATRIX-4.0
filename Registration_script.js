@@ -41,31 +41,48 @@ function applySanitization(input) {
     input.addEventListener("input", () => {
         let val = input.value;
 
-        // 1. NAME FIELDS: Remove digits and special characters (Allow only A-Z and spaces)
-        // We exclude "team_name" if you want teams to have numbers/symbols
+        // --- Existing Sanitization Logic ---
         if (name.includes("name") && !name.includes("team")) {
             val = val.replace(/[^A-Za-z\s]/g, "");
         }
-
-        // 2. EMAIL, PHONE, & ROLL NO: Strip all spaces immediately
         if (name.includes("email") || name.includes("phone") || name.includes("roll")) {
             val = val.replace(/\s/g, "");
         }
-
-        // 3. PHONE & ROLL NO: Strip everything except digits
         if (name.includes("phone") || name.includes("roll")) {
             val = val.replace(/\D/g, "");
         }
-
         input.value = val;
+
+        // --- NEW: REAL-TIME ERROR REMOVAL ---
+        // If an error is currently visible, check if the input is now valid
+        const errorEl = name.includes("reg_day") 
+            ? input.closest('.check-item').nextElementSibling 
+            : input.nextElementSibling;
+
+        if (errorEl && errorEl.classList.contains("error-msg")) {
+            if (checkValidityOnly(input)) {
+                removeError(input);
+            }
+        }
     });
 
-    // Handle Pasting
     input.addEventListener("paste", (e) => {
-        setTimeout(() => {
-            input.dispatchEvent(new Event("input"));
-        }, 0);
+        setTimeout(() => input.dispatchEvent(new Event("input")), 0);
     });
+}
+
+// Helper to check logic without triggering "Please fill this field" errors
+function checkValidityOnly(input) {
+    const val = input.value.trim();
+    const name = input.name;
+
+    if (!val) return false;
+    if (name.includes("name") && !name.includes("team") && !/^[A-Za-z\s]+$/.test(val)) return false;
+    if (name.includes("email") && !val.toLowerCase().endsWith("@thapar.edu")) return false;
+    if (name.includes("phone") && val.length !== 10) return false;
+    if (name.includes("roll") && !/^[17]\d{8,9}$/.test(val)) return false;
+
+    return true;
 }
 
 function validateField(input) {
