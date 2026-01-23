@@ -136,7 +136,7 @@ nav {
 
 .env-card {
     position: absolute; bottom: 3; left: 15px; width: 250px; height: 150px;
-    background: #fff; border-radius: 4px;
+    background: #000000; border-radius: 4px;
     transform: translateY(20px); 
     opacity: 0; 
     z-index: 5;
@@ -312,7 +312,7 @@ nav {
 
 @media (max-width: 700px) {
     .page-header h1 { font-size: 2rem; }
-    .grid-container { grid-template-columns: minmax(0, 1fr); gap: 60px; padding: 0 20px; }
+    .grid-container { grid-template-columns: minmax(0, 1fr); gap: 60px; padding: 30px 20px; }
     .envelope-wrapper { transform: scale(0.9); margin: -10px 0; }
 }
 @media (max-width: 360px) {
