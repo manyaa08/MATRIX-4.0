@@ -273,6 +273,11 @@ nav {
   font-size: 16px;
   font-weight: 600;
   margin-bottom: 22px;
+  .input {
+    /* ... your existing code ... */
+    -webkit-appearance: none; /* Removes default iOS styling */
+    appearance: none;
+  }
 }
 
 .input::placeholder { color: rgba(255,255,255,0.35); }
@@ -478,4 +483,19 @@ input:-webkit-autofill:focus {
 /* Fix for the dropdown/input caret and general text rendering */
 input:-internal-autofill-selected {
     background-color: transparent !important;
+}
+
+/* Remove the blue tap highlight on mobile/tablets */
+* {
+    -webkit-tap-highlight-color: transparent;
+    -webkit-touch-callout: none;
+}
+
+/* Remove the default focus outline that some mobile browsers add */
+.input:focus, 
+.dropdown-selected:focus, 
+.button:focus,
+.check-item:focus {
+    outline: none !important;
+    -webkit-appearance: none;
 }
