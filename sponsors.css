@@ -134,18 +134,32 @@ nav {
     border: 1px solid rgba(255, 51, 51, 0.4);
 }
 
+/* Update this in Section 5 */
 .env-card {
-    position: absolute; bottom: 3; left: 15px; width: 250px; height: 150px;
-    background: #000000; border-radius: 4px;
+    position: absolute; 
+    bottom: 3px; /* Fixed typo from '3' to '3px' */
+    left: 15px; 
+    width: 250px; 
+    height: 150px;
+    background: #000000; 
+    border-radius: 4px;
     transform: translateY(20px); 
     opacity: 0; 
-    z-index: 5;
-    transition: transform 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) 0.4s, opacity 0.3s ease;
-    display: flex; flex-direction: column; align-items: center; justify-content: center;
+    z-index: 5; /* Starts behind the front flap */
+    /* Optimized transition for the "up and over" feel */
+    transition: transform 0.6s cubic-bezier(0.34, 1.56, 0.64, 1), 
+                opacity 0.3s ease, 
+                z-index 0s linear 0.3s; 
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+    justify-content: center;
     box-shadow: 0 10px 30px rgba(0,0,0,0.8);
     background-image: linear-gradient(transparent 50%, rgba(255,0,0,0.05) 50%);
     background-size: 100% 4px;
+    transition: transform 0.5s ease-in, opacity 0.3s ease, z-index 0s 0.5s;
 }
+
 .env-card img { max-width: 85%; max-height: 85%; object-fit: contain; }
 
 @keyframes indicator-blink-red {
@@ -227,30 +241,69 @@ nav {
     transform: translateY(-110px); 
 }
 
+
+/* NEW ANI */
+@keyframes openCloseFlap {
+    0% { transform: rotateX(0deg); z-index: 5; }
+    20% { transform: rotateX(180deg); z-index: 1; } /* Open quickly */
+    80% { transform: rotateX(180deg); z-index: 1; } /* Stay open while card moves */
+    100% { transform: rotateX(0deg); z-index: 1; } /* Close over the card */
+}
+
+@keyframes popAndStack {
+    0% {
+        transform: translateY(20px);
+        z-index: 5;
+        opacity: 0;
+    }
+    45% {
+        transform: translateY(-160px);
+        z-index: 5;
+        opacity: 1;
+    }
+    55% {
+        transform: translateY(-160px);
+        z-index: 25; /* Switch to front at the peak */
+        opacity: 1;
+    }
+    100% {
+        transform: translateY(-20px); /* Back to original position, but on top */
+        z-index: 25;
+        opacity: 1;
+    }
+}
+
+
+
+
+
+
+
 /* LAPTOP/DESKTOP: Triggered by Hover */
 @media (hover: hover) {
+    /* 1. Trigger the Flap Animation */
     .envelope-wrapper:hover .env-flap {
-        animation: none;
-        border-color: #ff3333; 
-        transform: rotateX(180deg); 
-        background-color: #4d0000; 
-        z-index: 0; 
-        transition-delay: 0s;
+        transform-origin: top; /* Critical for a realistic fold */
+        animation: openCloseFlap 2s ease-in-out forwards;
+        background-color: #4d0000;
+        border-color: #ff3333;
     }
+
+    /* 2. Trigger the Card Animation */
+    .envelope-wrapper:hover .env-card {
+        animation: popAndStack 2s ease-in-out forwards;
+    }
+
+    /* 3. Aesthetic adjustments for the rest */
     .envelope-wrapper:hover .env-front {
-        animation: none;
         background-color: #2a0000;
-        box-shadow: inset 0 0 30px rgba(255, 0, 0, 0.6), 0 0 15px rgba(255, 0, 0, 0.4); 
+        box-shadow: inset 0 0 30px rgba(255, 0, 0, 0.6), 0 0 15px rgba(255, 0, 0, 0.4);
         border-bottom-color: #ff3333;
     }
-    .envelope-wrapper:hover .env-card {
-        opacity: 1; 
-        transform: translateY(-110px); 
-    }
+
     .envelope-wrapper:hover .wax-seal {
-        box-shadow: 0 0 25px #ff0000; 
-        background: #ffffff; 
-        color: #000;
+        opacity: 0; /* Hide seal when it opens */
+        transition: opacity 0.3s;
     }
 }
 
@@ -307,15 +360,67 @@ nav {
     .hamburger.toggle span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
     .hamburger.toggle span:nth-child(2) { opacity: 0; }
     .hamburger.toggle span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
-            
 
+    /* ... existing nav code ... */
+
+    /* Ensure the card doesn't pop up too high on tablets */
+    @keyframes popAndStackTablet {
+        0% { transform: translateY(20px); z-index: 5; opacity: 0; }
+        45% { transform: translateY(-130px); z-index: 5; opacity: 1; }
+        55% { transform: translateY(-130px); z-index: 25; opacity: 1; }
+        100% { transform: translateY(-15px); z-index: 25; opacity: 1; }
+    }
+
+    /* Apply the animation to the JS click state for mobile/tablet */
+    .envelope-wrapper.is-open .env-card {
+        animation: popAndStackTablet 1.5s ease-in-out forwards;
+    }
+
+    .envelope-wrapper.is-open .env-flap {
+        animation: openCloseFlap 1.5s ease-in-out forwards;
+    }
+}
+            
 
 @media (max-width: 700px) {
     .page-header h1 { font-size: 2rem; }
-    .grid-container { grid-template-columns: minmax(0, 1fr); gap: 60px; padding: 30px 20px; }
-    .envelope-wrapper { transform: scale(0.9); margin: -10px 0; }
+    
+    /* Increase vertical gap to account for the card popping UP */
+    .grid-container { 
+        grid-template-columns: minmax(0, 1fr); 
+        gap: 60px; /* Increased top/bottom gap */
+        padding: 20px 20px; 
+    }
+
+    .envelope-wrapper { transform: scale(0.9); margin: 0; }
+
+    /* Scaled animation for small screens */
+    @keyframes popAndStackMobile {
+        0% { transform: translateY(10px); z-index: 5; opacity: 0; }
+        45% { transform: translateY(-160px); z-index: 5; opacity: 1; }
+        55% { transform: translateY(-160px); z-index: 25; opacity: 1; }
+        100% { transform: translateY(-10px); z-index: 25; opacity: 1; }
+    }
+
+    .envelope-wrapper.is-open .env-card {
+        animation: popAndStackMobile 1.5s ease-in-out forwards;
+    }
 }
+
 @media (max-width: 360px) {
-    .envelope-wrapper { transform: scale(0.8); margin: -20px 0; }
+    .envelope-wrapper { transform: scale(0.8); margin: -10px 0; }
     .page-header h1 { font-size: 1.8rem; }
-}}
+
+    @keyframes popAndStackSmall {
+        0% { transform: translateY(10px); z-index: 5; opacity: 0; }
+        45% { transform: translateY(-90px); z-index: 5; opacity: 1; }
+        55% { transform: translateY(-90px); z-index: 25; opacity: 1; }
+        100% { transform: translateY(-5px); z-index: 25; opacity: 1; }
+    }
+
+    .envelope-wrapper.is-open .env-card {
+        animation: popAndStackSmall 1.5s ease-in-out forwards;
+    }
+}
+
+
