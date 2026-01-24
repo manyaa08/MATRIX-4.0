@@ -409,6 +409,10 @@
         flex-direction: row;
         gap: 10px;
     }
+    
+    .main-content {
+            padding: 100px 20px 60px 20px;
+        }
 }
 
 .main-content {
@@ -439,4 +443,32 @@ textarea:-webkit-autofill:focus {
     color: #ff3333;
     background-color: #1a0505;
     border-radius: 2px;
+}
+
+
+
+
+
+.minimal-footer {
+    width: 100%;
+    /* Use clamp for responsive padding: min 15px, preferred 3vw, max 25px */
+    padding: clamp(15px, 3vw, 25px) 0; 
+    background-color: #050000;
+    opacity: 0.6;
+    border-top: 1px solid rgba(255, 50, 50, 0.1);
+    text-align: center;
+    margin-top: auto;
+}
+
+.minimal-footer p {
+    font-family: 'Montserrat', sans-serif;
+    /* Scales font size based on screen width so it doesn't look huge on phones */
+    font-size: clamp(0.75rem, 2vw, 1rem); 
+    color: #ff0000;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    font-weight: 600;
+    /* Prevents text from hitting the screen edges on mobile */
+    margin: 0 15px; 
+    line-height: 1.4;
 }
