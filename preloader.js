@@ -32,8 +32,8 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     // --- NEW: ADVANCED BACKGROUND LOADING ---
-    const pagesToPrefetch = ['events.html', 'sponsors.html', 'contact_us.html'];
-    const imagesToCache = ['images/matrix_lead_logo.png', 'images/Favicon.png', 'images/events_page_i1.jpeg','assets/images/bg.png','assets/images/bg2.png','assets/images/bg3.png','assets/images/bg4.png','assets/images/matrix_lead_logo.png'];
+    const pagesToPrefetch = ['events.html', 'sponsors.html', 'contact_us.html','Registration_index.html', 'index.html'];
+    const imagesToCache = ['images\Title_Sponsor.jpeg','images\Sponsor2.jpeg','images\Sponsor1.jpeg','images\Sponsor_BG.png','images\background-image.jpeg','images/matrix_lead_logo.png', 'images/Favicon.png', 'images/events_page_i1.jpeg','assets/images/bg.png','assets/images/bg2.png','assets/images/bg3.png','assets/images/bg4.png','assets/images/matrix_lead_logo.png'];
     // Ensuring the video path matches the source in events.html
     const vaultVideoPath = 'images/Vault_Handle_Animation_Generation.mp4'; 
 
