@@ -81,13 +81,23 @@
         <div class="metallic-card">
             <div class="close-modal" id="closeModal">&times;</div>
             <h2 class="modal-heading">RULEBOOK</h2>
-            <ul class="rules-list" id="modalRules"></ul>
+            
+            <div class="rulebook-img-container">
+                <img src="" alt="Rulebook" id="rulebookImage">
+            </div>
+
             <a href="Registration_index.html" class="reg-btn">REGISTER NOW</a>
         </div>
     </div>
+
+
+
+
     </div> <footer class="minimal-footer">
 	    <p>&copy; 2026 LEAD TIET. All rights reserved.</p>
     </footer>
+
+
     <script>
                 /* --- NAVIGATION --- */
         const hamburger = document.getElementById('hamburger-menu');
@@ -158,21 +168,27 @@
 
         /* --- MODAL LOGIC --- */
         const overlay = document.getElementById('rulebookOverlay');
-        const modalRules = document.getElementById('modalRules');
+        const rulebookImage = document.getElementById('rulebookImage');
+        
+        // Updated to use your uploaded PNG filenames
         const rulesData = {
-            "CODE RED": ["Coming Soon."],
-            "STEALTH SELL": ["Coming Soon."],
-            "PHANTOM": ["Coming Soon."],
+            "CODE RED": "images/R1.png",
+            "STEALTH SELL": "images/R2.png",
+            "PHANTOM": "images/R3.png",
         };
 
         document.querySelectorAll('.view-btn').forEach(btn => {
             btn.addEventListener('click', (e) => {
                 e.preventDefault(); 
                 e.stopPropagation();
-                const day = btn.closest('.day-card').querySelector('.day-text').innerText;
-                modalRules.innerHTML = rulesData[day].map(r => `<li>${r}</li>`).join('');
-                overlay.classList.add('active');
-                document.body.style.overflow = 'hidden';
+                const day = btn.closest('.day-card').querySelector('.day-text').innerText.trim();
+                
+                // Set the image source based on the event title
+                if (rulesData[day]) {
+                    rulebookImage.src = rulesData[day];
+                    overlay.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                }
             });
         });
 

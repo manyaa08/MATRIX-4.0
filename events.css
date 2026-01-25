@@ -212,32 +212,30 @@ video[poster] {
 .rulebook-overlay {
     position: fixed; top: 0; left: 0; width: 100%; height: 100%;
     background-color: rgba(0, 0, 0, 0.9); backdrop-filter: blur(8px); z-index: 6000;
-    display: flex; justify-content: center; align-items: center;
+    display: flex; justify-content: center; align-items: top;
     opacity: 0; pointer-events: none; transition: opacity 0.3s ease;
     padding: 20px; box-sizing: border-box;
 }
 
 .rulebook-overlay.active { opacity: 1; pointer-events: all; }
 
-/* Update the container to allow the button to overflow the bottom */
+
+/* Updated Metallic Card */
 .metallic-card {
     position: relative; 
-    width: 100%; 
+    width: 70%; /* Better fit for mobile */
     max-width: 500px; 
-    /* Removed overflow-y: auto to allow the button to pop out; 
-       If your content is very long, use padding-bottom instead */
+    max-height: 80vh; /* Keeps it from disappearing off the top/bottom */
     background-image: url('images/rulebook background.jpg'); 
     background-size: cover; 
     background-position: center;
-    border: 3px solid #5d4037; 
-    outline: 1px solid #d4af37; 
-    outline-offset: -10px; 
-    border-radius: 4px; 
+
     box-shadow: 0 20px 50px rgba(0,0,0,1);
-    padding: 3.5rem 2rem 4rem; /* Increased bottom padding */
+    padding: 3rem 1.5rem 1.5rem; 
     display: flex; 
     flex-direction: column; 
     color: #1a1a1a;
+    overflow: visible; /* Allows the Register button to pop out */
 }
 
 .close-modal {
@@ -252,12 +250,12 @@ video[poster] {
 .modal-heading { 
     font-family: 'Orbitron', sans-serif; font-size: 2.2rem; 
     text-align: center; margin-bottom: 2rem; text-transform: uppercase; 
-    letter-spacing: 6px; color: #2e1a12; font-weight: 900; 
-    border-bottom: 2px solid #2e1a12; padding-bottom: 10px; 
+    letter-spacing: 6px; color: #fbbf24; font-weight: 900; 
+    border-bottom: 2px solid #2e1a12; padding-bottom: 0px; 
 }
 
 .rules-list { 
-    list-style: none; padding: 0; margin: 40px 0; 
+    list-style: none; padding: 0; margin: 0px 0; 
     flex-grow: 1; display: flex; flex-direction: column;
     justify-content: center; align-items: center;
 }
@@ -371,20 +369,21 @@ video[poster] {
 
 
 @media (max-width: 768px) {
+    .rulebook-overlay {
+        top: -60px;
+    }
     .events-grid { grid-template-columns: 1fr; max-width: 350px; }
     .hero h1 { font-size: 2.5rem; }
+    .rulebook-overlay {
+        align-items: center;
+    }
 }
 
 @media (max-width: 600px) {
     .close-modal {
         top: 10px; right: 10px; font-size: 2rem;
-        background: rgba(255, 255, 255, 0.5); width: 40px; height: 40px;
         display: flex; align-items: center; justify-content: center; border-radius: 50%;
     }
-    .metallic-card { padding: 4rem 1.5rem 2rem; }
-    .modal-heading { font-size: 1.6rem; letter-spacing: 3px; }
-    .rules-list li { font-size: 1.5rem; letter-spacing: 2px; }
-    .register-btn { font-size: 1.1rem; }
 }
 
 
@@ -456,4 +455,96 @@ video[poster] {
     /* Prevents text from hitting the screen edges on mobile */
     margin: 0 15px; 
     line-height: 1.4;
+}
+
+/*
+
+/* =========================================
+   UPDATED RULEBOOK IMAGE STYLES
+   ========================================= */
+
+/* Scrollable Image Container - DISABLED SCROLLING FOR LAPTOP */
+.rulebook-img-container {
+    width: 100%;
+    /* Changed from flex: 1 to auto to prevent stretching */
+    flex: 0 1 auto; 
+    /* Remove scrollbars for laptop view */
+    overflow: hidden; 
+    margin-bottom: 0px;
+    padding-right: 0;
+    display: flex;
+    justify-content: top;
+    align-items: flex-start;
+}
+
+#rulebookImage {
+    width: 100%; 
+    height: auto; 
+    /* Ensures the image fits within the modal height without triggering scroll */
+    max-height: 60vh; 
+    object-fit: contain;
+    display: block;
+    border-radius: 4px;
+}
+
+/* Targeted Fix for 968px Media */
+@media (max-width: 968px) {
+    .metallic-card {
+        max-width: 450px;
+    }
+
+    .rulebook-img-container {
+        /* Strictly ensure no scrollbars appear */
+        overflow: hidden; 
+        padding-right: 0;
+    }
+
+    #rulebookImage {
+        width: 100%;
+        height: 100%;
+        /* Adjust max-height for tablets to keep image R1, R2, R3 fully visible */
+        max-height: 55vh; 
+        object-fit: contain;
+    }
+}
+
+@media (max-width: 600px) {
+    .metallic-card {
+        padding: 2.5rem 1rem 1rem;
+        max-height: 75vh; /* Shorter on small phones to ensure button is visible */
+    }
+
+    .modal-heading {
+        font-size: 1.5rem;
+        letter-spacing: 3px;
+        margin-bottom: 1rem;
+    }
+
+    .reg-btn {
+        bottom: -50px; /* Adjusted position for smaller screens */
+        font-size: 0.9rem;
+        padding: 12px 25px;
+    }
+}
+
+@media (max-width: 768px) {
+    /* Grid adjustment for tablets */
+    .events-grid { 
+        grid-template-columns: repeat(1, 1fr); /* 2 columns instead of 1 */
+        max-width: 700px; 
+        gap: 1.5rem;
+    }
+
+    /* Modal size for tablets */
+    .metallic-card {
+        width: 85%; /* Slightly wider than mobile for better readability */
+        max-width: 480px;
+        max-height: 80vh; /* Keeps card height consistent */
+        padding: 3rem 1.5rem 1.5rem;
+    }
+
+    .modal-heading {
+        font-size: 1.8rem;
+        letter-spacing: 4px;
+    }
 }
