@@ -96,14 +96,15 @@ nav {
 /* =========================================
    3. HERO & GRID
    ========================================= */
+
+
 .hero { text-align: center; margin: 8rem 0 5rem; padding: 0 1rem; }
 
 .hero h1 { 
-    font-family: 'Orbitron', sans-serif; 
-    font-size: 4rem; letter-spacing: 0.3em; margin: 0; 
+    font-family: 'Orbitron', sans-serif; font-size: 2.8rem; margin-bottom: 10px; text-transform: uppercase; letter-spacing: 2px; color: #fff; text-shadow: 0 2px 10px rgba(255, 0, 0, 0.4); 
 }
 
-.hero p { color: #bbb; margin-top: 1rem; font-size: 1.1rem; letter-spacing: 0.05em; }
+.hero p {  color: #ff3333; letter-spacing: 3px; font-size: 0.9rem; font-weight: 600; text-transform: uppercase; }
 
 .events-grid {
     display: grid; grid-template-columns: repeat(3, 1fr); gap: 2.5rem;
