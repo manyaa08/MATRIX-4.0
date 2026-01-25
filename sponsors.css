@@ -116,7 +116,8 @@ nav {
 }
 
 .envelope { 
-    position: relative; width: 100%; height: 100%; 
+    top: 60px;
+    position: relative; width: 100%; min-height: 100%; 
     transform-style: preserve-3d;
     clip-path: inset(-500% 0 0 0); 
     transition: filter 0.4s ease;
@@ -383,12 +384,16 @@ nav {
             
 
 @media (max-width: 700px) {
-    .page-header h1 { font-size: 2rem; }
+    .page-header {
+        margin-top: 100px;
+
+    }
+    .page-header h1 { font-size: 2rem; margin-bottom: 20px;}
     
     /* Increase vertical gap to account for the card popping UP */
     .grid-container { 
         grid-template-columns: minmax(0, 1fr); 
-        gap: 60px; /* Increased top/bottom gap */
+        gap: 30px; /* Increased top/bottom gap */
         padding: 20px 20px; 
     }
 
@@ -404,6 +409,9 @@ nav {
 
     .envelope-wrapper.is-open .env-card {
         animation: popAndStackMobile 1.5s ease-in-out forwards;
+    }
+    .envelope { 
+        top: 0px;
     }
 }
 
