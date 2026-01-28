@@ -249,7 +249,7 @@ regForm.addEventListener("submit", async (e) => {
             
             regForm.scrollTo({ top: regForm.scrollHeight, behavior: 'smooth' });
 
-            setTimeout(() => location.reload(), 4000);
+            setTimeout(() => location.reload(), 10000);
         } else {
             // UNLOCK FORM ON ERROR
             isSubmitting = false; 
